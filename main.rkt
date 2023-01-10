@@ -11,13 +11,18 @@
 (define (thing name arg)
   (~a "\\" name "{" arg "}"))
 
-(define (num-to-string val)
-  (if (string? val) val (number->string val)))
+(define (item-to-string val)
+  (cond 
+    [(string? val) val ]
+    [(number? val) (number->string val) ]
+    [(symbol? val) (symbol->string val) ]
+    )
+  )
 
 (define (expand-body arg)
   (cond
     [(list? arg)
-     (string-join (map num-to-string (flatten arg)))]
+     (string-join (map item-to-string (flatten arg)))]
     [(string? arg) arg]
     [else (error (~a "Unsupported body argument: " arg))]))
 
@@ -39,7 +44,7 @@
   (thing "sqrt" body))
 
 (define (m-pow val exponent)
-  (list val "^{" exponent "}"))
+  (expand-body (list val "^{" exponent "}")))
 
 (define ^ m-pow)
 
@@ -60,8 +65,27 @@
 (define (add a b)
   (list a "+" b))
 
-(define doc-content
-  (list (equation
-         (list (e^ (angs (add 3 6))) (/ 123 55) (e^ 11)))))
+#| (define doc-content |#
+#|   (list (equation |#
+#|          (list (e^ (angs (add 3 6))) (/ 123 55) (e^ 11))))) |#
 
-(display (document doc-content))
+
+(define (dd variable . degree) 
+  (if (null? degree)
+      (expand-body (/  "d"  (list "d" variable) ))
+      (expand-body (/  (m-pow "d" degree) (list "d" (m-pow variable degree)) ))
+    )
+  )
+
+(define (anki-surround body) 
+  (string-join (list "\\(" body "\\)"))
+  )
+
+(define cur-equation (list
+  (dd 't 2) 'f '+ 'y (dd 't) 'f '+ '\\omega_0 'f '=0
+))
+
+(define doc-content
+  (anki-surround (expand-body cur-equation)))
+
+(display doc-content)
