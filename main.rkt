@@ -1,91 +1,61 @@
 #lang racket
 
-(define (intersperse separator lst)
-  (if (or (null? lst) (null? (cdr lst)))
-      lst
-      (cons (car lst)
-            (cons separator
-                  (intersperse separator (cdr lst))))))
-
-#| What does ~a do? |#
-(define (thing name arg)
-  (~a "\\" name "{" arg "}"))
-
-(define (item-to-string val)
-  (cond 
-    [(string? val) val ]
-    [(number? val) (number->string val) ]
-    [(symbol? val) (symbol->string val) ]
-    )
-  )
-
-(define (expand-body arg)
-  (cond
-    [(list? arg)
-     (string-join (map item-to-string (flatten arg)))]
-    [(string? arg) arg]
-    [else (error (~a "Unsupported body argument: " arg))]))
-
-(define (lines lst)
-  (string-join (intersperse "\n" lst)))
-
-(define (beg name body)
-  (lines (list (thing "begin" name)
-               (expand-body body)
-               (thing "end" name))))
-
-(define (equation body)
-  (beg "equation" body))
-
-(define (document body)
-  (beg "document" body))
-
-(define (m-sqrt body)
-  (thing "sqrt" body))
-
-(define (m-pow val exponent)
-  (expand-body (list val "^{" exponent "}")))
-
-(define ^ m-pow)
-
-(define (m-exp exponent)
-  (m-pow "e" exponent))
-
-(define e^ m-exp)
-
-(define (parens body)
-  (list "\\left(" body "\\right)"))
-
-(define (angs body)
-  (list "\\langle" body "\\rangle"))
-
-(define (/ a b)
-  (list "\\frac{" a "}{" b "}"))
-
-(define (add a b)
-  (list a "+" b))
+(require "latex.rkt")
+#| (require "math.rkt") |#
 
 #| (define doc-content |#
 #|   (list (equation |#
 #|          (list (e^ (angs (add 3 6))) (/ 123 55) (e^ 11))))) |#
 
+(define (anki-surround . ...)
+  (string-join (list "\\(" (expand-body ...) "\\)")))
 
-(define (dd variable . degree) 
-  (if (null? degree)
-      (expand-body (/  "d"  (list "d" variable) ))
-      (expand-body (/  (m-pow "d" degree) (list "d" (m-pow variable degree)) ))
-    )
+ #| (dd 't 2) 'f '+ 'y (dd 't) 'f '+ '\\omega_0 'f '=0 |#
+ #| (list 'A (e^ (list '\\alpha 't))) |#
+
+(define over-damped
+  (list
+   (let ([cont 
+           (parens (m-sqrt (m-pow '\\omega_0 2) '- (/ (m-pow '\\gamma 2) 4)) 't)
+      ])
+     (list
+      (brackets
+       'A '\\cos cont '+ 'B '\\sin cont
+       )
+      (e^ '- (list '\\gamma 't) '/ 2)
+      )
   )
-
-(define (anki-surround body) 
-  (string-join (list "\\(" body "\\)"))
-  )
-
-(define cur-equation (list
-  (dd 't 2) 'f '+ 'y (dd 't) 'f '+ '\\omega_0 'f '=0
 ))
 
-(define doc-content
-  (anki-surround (expand-body cur-equation)))
+(define under-damped
+  (list
+   (let ([cont 
+           (list
+             't
+              (m-sqrt 
+                (/ (m-pow '\\gamma 2) 4)
+                '-
+                (m-pow '\\omega_0 2)
+                )
+            )
+      ])
+     (list
+      (brackets
+         'A (e^ cont)
+         '+ 
+         'B (e^ '- cont)
+       )
+      (e^ '- (list '\\gamma 't) '/ 2)
+      )
+  )
+))
 
-(display doc-content)
+(define critical-damping (list
+  (parens '(A + Bt))
+  (e^ '( - \\gamma t / 2))
+))
+
+#| (define cur-equation critical-damping) |#
+(define cur-equation under-damped)
+
+(display (anki-surround cur-equation))
