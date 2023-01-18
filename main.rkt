@@ -1,6 +1,5 @@
 #lang racket
-(require "latex.rkt")
-#| (require "math.rkt") |#
+(require "RatX.rkt")
 
 #| (define doc-content |#
 #|   (list (equation |#
