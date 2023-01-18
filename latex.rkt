@@ -1,6 +1,7 @@
 #lang racket
 
 (provide
+ thing
  expand-body
  m-pow
  parens
@@ -12,7 +13,8 @@
  document
  add
  angs
- )
+ sub)
+ 
 
 (define (item-to-string val)
   (cond
@@ -58,19 +60,22 @@
 (define (e^ . ...) (m-exp (expand-body ...)))
 
 (define (parens . ...)
-  (list "\\left(" (expand-body ...) "\\right)"))
+  (expand-body (list "\\left(" (expand-body ...) "\\right)")))
 
 (define (brackets . ...)
-  (list "\\left[" (expand-body ...) "\\right]"))
+  (expand-body (list "\\left[" (expand-body ...) "\\right]")))
 
-(define (angs . ... )
-  (list "\\langle" (expand-body ...) "\\rangle"))
+(define (angs . ...)
+  (expand-body (list "\\langle" (expand-body ...) "\\rangle")))
+
+(define (sub var subscript)
+  (expand-body (list var '_ "{" subscript "}")))
 
 (define (/ a b)
-  (list "\\frac{" a "}{" b "}"))
+  (expand-body (list "\\frac{" a "}{" b "}")))
 
 (define (add a b)
-  (list a "+" b))
+  (expand-body (list a "+" b)))
 
 #| What does ~a do? |#
 (define (thing name arg)
