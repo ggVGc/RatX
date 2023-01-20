@@ -1,6 +1,7 @@
 #lang racket
 
 (provide
+ beg
  thing
  expand-body
  m-pow
@@ -13,7 +14,12 @@
  document
  add
  angs
- sub)
+ sub
+ align
+ lines
+ usepackage
+ packages
+ align*)
  
 
 (define (item-to-string val)
@@ -34,8 +40,8 @@
       lst
       (cons (car lst) (cons separator (intersperse separator (cdr lst))))))
 
-(define (lines . ...)
-  (string-join (intersperse "\n" ...)))
+(define (lines  entries)
+  (string-join (intersperse "\n" entries)))
 
 (define (equation body)
   (beg "equation" body))
@@ -44,7 +50,7 @@
   (beg "document" body))
 
 (define (beg name body)
-  (lines (thing "begin" name) (expand-body body) (thing "end" name)))
+  (lines (list (thing "begin" name) (expand-body body) (thing "end" name))))
 
 (define (m-sqrt . ...)
   (thing "sqrt" (expand-body ...)))
@@ -80,3 +86,14 @@
 #| What does ~a do? |#
 (define (thing name arg)
   (~a "\\" name "{" arg "}"))
+
+(define (align . entries)
+  (beg "align"
+    (map (lambda (x) (list '& x)) (intersperse "\\\\ \n" entries))))
+
+(define (align* . entries)
+  (beg "align*"
+    (map (lambda (x) (list '& x)) (intersperse "\\\\ \n" entries))))
+
+(define (usepackage arg) (thing "usepackage" arg))
+(define (packages . ...) (lines (map usepackage ...)))

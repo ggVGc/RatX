@@ -34,4 +34,5 @@
 #| (define cur-equation critical-damping) |#
 (define cur-equation under-damped)
 
-(display (anki-surround cur-equation))
+; (display (anki-surround cur-equation))
+(display (align 'a))
