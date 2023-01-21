@@ -15,7 +15,6 @@
  add
  angs
  sub
- align
  lines
  usepackage
  packages
@@ -28,7 +27,7 @@
     [(number? val) (number->string val)]
     [(symbol? val) (symbol->string val)]))
 
-(define (expand-body arg)
+(define (expand-body . arg)
   (cond
     [(list? arg) (string-join (map item-to-string (flatten arg)))]
     [(string? arg) arg]
