@@ -10,4 +10,4 @@
 
 
 (define (ln content)
-  (thing "ln" content))
+  (command "ln" content))

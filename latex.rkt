@@ -1,58 +1,48 @@
 #lang racket
+(require "latex_base.rkt")
+(require "simple_commands.rkt")
 
+(provide (all-from-out "latex_base.rkt"))
+(provide (all-from-out "simple_commands.rkt"))
 (provide
+ math
  beg
- thing
- expand-body
  m-pow
  parens
  m-sqrt
  brackets
  e^
- / equation
+ /
+ +
+ equation
  ^
  document
  add
+ frac
  angs
- sub
+ _
  lines
- usepackage
  packages
+ align
  align*)
  
 
-(define (item-to-string val)
-  (cond
-    [(string? val) val]
-    [(number? val) (number->string val)]
-    [(symbol? val) (symbol->string val)]))
-
-(define (expand-body . arg)
-  (cond
-    [(list? arg) (string-join (map item-to-string (flatten arg)))]
-    [(string? arg) arg]
-    [else (error (~a "Unsupported body argument: " arg))]))
-
-
-(define (intersperse separator lst)
-  (if (or (null? lst) (null? (cdr lst)))
-      lst
-      (cons (car lst) (cons separator (intersperse separator (cdr lst))))))
 
 (define (lines  entries)
-  (string-join (intersperse "\n" entries)))
+  (string-join (intersperse "\n" entries) ""))
 
-(define (equation body)
-  (beg "equation" body))
+(define (beg name body)
+  (lines (wrapped2 (command "begin" name)  (command "end" name) body)))
+
+(define (equation . body)
+  (beg "equation" (expand-body body)))
 
 (define (document body)
   (beg "document" body))
 
-(define (beg name body)
-  (lines (list (thing "begin" name) (expand-body body) (thing "end" name))))
 
 (define (m-sqrt . ...)
-  (thing "sqrt" (expand-body ...)))
+  (command "sqrt" (expand-body ...)))
 
 (define (m-pow val exponent)
   (expand-body (list val "^{" exponent "}")))
@@ -65,34 +55,38 @@
 (define (e^ . ...) (m-exp (expand-body ...)))
 
 (define (parens . ...)
-  (expand-body (list "\\left(" (expand-body ...) "\\right)")))
+  (expand-body (command-wrapped "left(" "right)" ...)))
 
 (define (brackets . ...)
-  (expand-body (list "\\left[" (expand-body ...) "\\right]")))
+  (expand-body (command-wrapped "left[" "right]" ...)))
 
 (define (angs . ...)
-  (expand-body (list "\\langle" (expand-body ...) "\\rangle")))
+  (expand-body (command-wrapped "langle" "rangle" ...)))
 
-(define (sub var subscript)
-  (expand-body (list var '_ "{" subscript "}")))
+(define (_ var subscript)
+  (expand-body var '_ "{" subscript "}"))
 
-(define (/ a b)
-  (expand-body (list "\\frac{" a "}{" b "}")))
+(define (frac a b)
+  (expand-body (command2 "frac" a b)))
+
+(define / frac)
 
 (define (add a b)
-  (expand-body (list a "+" b)))
+  (expand-body a "+" b))
 
-#| What does ~a do? |#
-(define (thing name arg)
-  (~a "\\" name "{" arg "}"))
+(define + add)
 
 (define (align . entries)
   (beg "align"
-    (map (lambda (x) (list '& x)) (intersperse "\\\\ \n" entries))))
+    (intersperse "\\\\ \n" (map (curry cons '&) entries))))
+      
 
 (define (align* . entries)
   (beg "align*"
-    (map (lambda (x) (list '& x)) (intersperse "\\\\ \n" entries))))
+    (intersperse "\\\\ \n" (map (curry cons '&) entries))))
 
-(define (usepackage arg) (thing "usepackage" arg))
 (define (packages . ...) (lines (map usepackage ...)))
+
+
+(define (math body)
+  (wrapped '& body))
