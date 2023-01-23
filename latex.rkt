@@ -8,6 +8,8 @@
 (provide
  pmatrix
  bmatrix
+ pvec
+ bvec
  math
  $
  beg
@@ -31,7 +33,7 @@
 
 
 (define (lines  entries)
-  (string-join (intersperse "\n" entries) ""))
+  (string-join (map expand-body entries) "\n"))
 
 (define (beg name body)
   (lines (wrapped2 (command "begin" name)  (command "end" name) body)))
@@ -73,7 +75,7 @@
 (define / frac)
 
 (define (add-linebreaks rows)
-    (intersperse "\\\\ \n" rows))
+    (intersperse "\\\\\n" rows))
 
 (define (align . entries)
   (beg "align" 
@@ -82,7 +84,7 @@
 
 (define (align* . entries)
   (beg "align*"
-    (intersperse "\\\\ \n" (map (curry cons '&) entries))))
+    (add-linebreaks (map (curry cons '&) entries))))
 
 (define (packages . ...) (lines (map usepackage ...)))
 
@@ -91,12 +93,16 @@
 
 (define $ math)
 
-(define (matrix prefix rows)
+(define (matrix prefix . rows)
   (beg (string-append prefix "matrix") 
-    (string-join 
       (add-linebreaks 
-        (map expand-body (map (curry intersperse "&") rows))) "")))
+        (map (curry intersperse "&") rows))))
+
+(define (vec prefix . cols)
+  (matrix prefix cols))
   
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
+(define pvec (curry vec "p"))
+(define bvec (curry vec "b"))
 

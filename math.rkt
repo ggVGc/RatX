@@ -17,6 +17,7 @@
     (^ (_ (command "sum") start) end)
     body))
 
+(define (abs v) (command 'abs v))
 (define pi (command 'pi))
 (define epsilon (command 'epsilon))
 (define mu (command 'mu))
@@ -24,6 +25,7 @@
 (define theta (command 'theta))
 (define phi (command 'phi))
 (define psi (command 'psi))
+(define implies (command 'implies))
 (define + '+)
 (define = '=)
 (define - '-)
