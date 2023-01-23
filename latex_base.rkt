@@ -1,6 +1,7 @@
 #lang racket
 
 (provide 
+  item-to-string
   expand-body
   intersperse
   wrapped
@@ -28,11 +29,11 @@
 #| What does ~a do? |#
 (define (command name . arg)
   (if (null? arg)
-    (~a "\\" name) 
+    (~a "\\" name " ") 
     (~a "\\" name "{" (expand-body arg) "}")))
+
 (define (command2 name a b)
     (~a "\\" name "{" (expand-body a) "}{" (expand-body b) "}"))
-
 
 (define (wrapped2 delim_a delim_b body)
    (list delim_a body delim_b))

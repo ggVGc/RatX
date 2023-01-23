@@ -1,7 +1,7 @@
-#lang racket
+#lang racket/base
 (require "latex.rkt")
 
-(provide dd ln)
+(provide (all-defined-out))
 
 (define (dd variable . degree)
   (if (null? degree)
@@ -11,3 +11,20 @@
 
 (define (ln content)
   (command "ln" content))
+
+(define (sum start end . body)
+  (list
+    (^ (_ (command "sum") start) end)
+    body))
+
+(define pi (command 'pi))
+(define epsilon (command 'epsilon))
+(define mu (command 'mu))
+(define inf (command 'infty))
+(define theta (command 'theta))
+(define phi (command 'phi))
+(define psi (command 'psi))
+(define + '+)
+(define = '=)
+(define - '-)
+

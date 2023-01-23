@@ -1,6 +1,7 @@
 #lang racket
-(provide (all-defined-out))
 (require "latex_base.rkt")
+
+(provide (all-defined-out))
 (require (for-syntax syntax/parse))
 
 (define-syntax def-simple           ; bind define2 to a
@@ -11,7 +12,11 @@
               [asdf 123]) 
          (syntax                   ; a new syntax object
            (begin                   ; following this template
-             (define (name . content) (command out-name (expand-body content))))))])))
+             (define (name . content) 
+              (command out-name (expand-body content))))))])))
  
 (def-simple section "section")
 (def-simple usepackage "usepackage")
+(define (label name) (command "label" name))
+(define (eqref name) (command "eqref" name))
+(define (ref name) (command "ref" name))

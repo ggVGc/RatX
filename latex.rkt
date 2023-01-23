@@ -4,8 +4,12 @@
 
 (provide (all-from-out "latex_base.rkt"))
 (provide (all-from-out "simple_commands.rkt"))
+
 (provide
+ pmatrix
+ bmatrix
  math
+ $
  beg
  m-pow
  parens
@@ -13,11 +17,9 @@
  brackets
  e^
  /
- +
  equation
  ^
  document
- add
  frac
  angs
  _
@@ -39,7 +41,6 @@
 
 (define (document body)
   (beg "document" body))
-
 
 (define (m-sqrt . ...)
   (command "sqrt" (expand-body ...)))
@@ -71,14 +72,12 @@
 
 (define / frac)
 
-(define (add a b)
-  (expand-body a "+" b))
-
-(define + add)
+(define (add-linebreaks rows)
+    (intersperse "\\\\ \n" rows))
 
 (define (align . entries)
-  (beg "align"
-    (intersperse "\\\\ \n" (map (curry cons '&) entries))))
+  (beg "align" 
+    (add-linebreaks (map (curry cons '&) entries))))
       
 
 (define (align* . entries)
@@ -87,6 +86,17 @@
 
 (define (packages . ...) (lines (map usepackage ...)))
 
+(define (math . body)
+  (expand-body (wrapped '$ body)))
 
-(define (math body)
-  (wrapped '& body))
+(define $ math)
+
+(define (matrix prefix rows)
+  (beg (string-append prefix "matrix") 
+    (string-join 
+      (add-linebreaks 
+        (map expand-body (map (curry intersperse "&") rows))) "")))
+  
+(define pmatrix (curry matrix "p"))
+(define bmatrix (curry matrix "b"))
+
