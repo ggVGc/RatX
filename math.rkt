@@ -26,6 +26,7 @@
 (define phi (command 'phi))
 (define psi (command 'psi))
 (define implies (command 'implies))
+(define pm (command 'pm))
 (define + '+)
 (define = '=)
 (define - '-)

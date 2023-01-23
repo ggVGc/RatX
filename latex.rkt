@@ -28,7 +28,8 @@
  lines
  packages
  align
- align*)
+ align*
+ comma-sep)
  
 
 
@@ -63,6 +64,9 @@
 (define (brackets . ...)
   (expand-body (command-wrapped "left[" "right]" ...)))
 
+(define (comma-sep . ...)
+  (intersperse "," ...))
+
 (define (angs . ...)
   (expand-body (command-wrapped "langle" "rangle" ...)))
 
@@ -93,13 +97,13 @@
 
 (define $ math)
 
-(define (matrix prefix . rows)
+(define (matrix prefix rows)
   (beg (string-append prefix "matrix") 
       (add-linebreaks 
         (map (curry intersperse "&") rows))))
 
 (define (vec prefix . cols)
-  (matrix prefix cols))
+  (matrix prefix (list cols)))
   
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
