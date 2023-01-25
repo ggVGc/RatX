@@ -17,6 +17,10 @@
  
 (def-simple section "section")
 (def-simple usepackage "usepackage")
+(def-simple dot "dot")
+(def-simple hat "hat")
+(def-simple bar "bar")
 (define (label name) (command "label" name))
 (define (eqref name) (command "eqref" name))
 (define (ref name) (command "ref" name))
+(define cdot (command 'cdot))

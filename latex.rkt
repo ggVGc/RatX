@@ -6,10 +6,13 @@
 (provide (all-from-out "simple_commands.rkt"))
 
 (provide
+ text
  pmatrix
  bmatrix
  pvec
  bvec
+ pvect
+ bvect
  math
  $
  beg
@@ -17,6 +20,7 @@
  parens
  m-sqrt
  brackets
+ braces
  e^
  /
  equation
@@ -63,6 +67,8 @@
 
 (define (brackets . ...)
   (expand-body (command-wrapped "left[" "right]" ...)))
+(define (braces . ...)
+  (expand-body (command-wrapped "left\\{" "right\\}" ...)))
 
 (define (comma-sep . ...)
   (intersperse "," ...))
@@ -104,9 +110,15 @@
 
 (define (vec prefix . cols)
   (matrix prefix (list cols)))
+
+(define (vect prefix . cols)
+  (matrix prefix (map list cols)))
   
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
 (define pvec (curry vec "p"))
 (define bvec (curry vec "b"))
+(define pvect (curry vect "p"))
+(define bvect (curry vect "b"))
+(define (text . args) (command "text" (list " " args " ")))
 
