@@ -103,16 +103,16 @@
 
 (define $ math)
 
-(define (matrix prefix rows)
+(define (matrix prefix . rows)
   (beg (string-append prefix "matrix") 
       (add-linebreaks 
         (map (curry intersperse "&") rows))))
 
 (define (vec prefix . cols)
-  (matrix prefix (list cols)))
+  (matrix prefix cols))
 
 (define (vect prefix . cols)
-  (matrix prefix (map list cols)))
+  (apply (curry matrix prefix) (map list cols)))
   
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
