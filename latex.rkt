@@ -16,6 +16,8 @@
  math
  $
  beg
+ beg2
+ beg-opts
  m-pow
  parens
  m-sqrt
@@ -33,7 +35,8 @@
  packages
  align
  align*
- comma-sep)
+ comma-sep
+ alignpre)
  
 
 
@@ -42,6 +45,15 @@
 
 (define (beg name body)
   (lines (wrapped2 (command "begin" name)  (command "end" name) body)))
+
+(define (beg2 name args body)
+  (lines (wrapped2 (command "begin" name args)  (command "end" name) body)))
+
+(define (beg-opts name opts body)
+  (lines
+    (wrapped2 
+      (expand-body (list (command "begin" name) "[" opts "]")) 
+      (command "end" name) body)))
 
 (define (equation . body)
   (beg "equation" (expand-body body)))
@@ -91,6 +103,9 @@
   (beg "align" 
     (add-linebreaks (map (curry cons '&) entries))))
       
+(define (alignpre pre . entries)
+  (beg "align" 
+    (cons (list pre "\\\\") (add-linebreaks (map (curry cons '&) entries)))))
 
 (define (align* . entries)
   (beg "align*"

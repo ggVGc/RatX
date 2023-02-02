@@ -26,14 +26,17 @@
     (string-join (map item-to-string (flatten arg)) "")
     (item-to-string arg)))
 
-#| What does ~a do? |#
-(define (command name . arg)
-  (if (null? arg)
-    (~a "\\" name " ") 
-    (~a "\\" name "{" (expand-body arg) "}")))
 
-(define (command2 name a b)
-    (~a "\\" name "{" (expand-body a) "}{" (expand-body b) "}"))
+#| What does ~a do? |#
+(define (command name . args)
+  (if (null? args)
+    (~a "\\" name " ") 
+    (apply (curry command2 name) args)))
+
+(define (command2 name . args)
+    (~a "\\" name (string-join (map 
+                                (lambda (x) (string-join (list "{" (expand-body x) "}") ""))
+                                args) "")))
 
 (define (wrapped2 delim_a delim_b body)
    (list delim_a body delim_b))
@@ -43,5 +46,3 @@
 
 (define (command-wrapped a b . body)
    (list (command a) " " body " " (command b)))
-  
-
