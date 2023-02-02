@@ -16,6 +16,7 @@
               (command out-name (expand-body content))))))])))
  
 (def-simple section "section")
+(def-simple subsection "subsection")
 (def-simple usepackage "usepackage")
 (def-simple dot "dot")
 (def-simple hat "hat")
