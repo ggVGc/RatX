@@ -36,4 +36,4 @@
 ; (display (anki-surround cur-equation))
 (display (align 'a))
 (section "asdf")
-(command2 "expval" (list 1 "/" 2) 'asdf (list 33 "/" 2))
+(command "expval" (list 1 "/" 2) 'asdf (list 33 "/" 2))

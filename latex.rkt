@@ -40,23 +40,30 @@
  
 
 
-(define (lines  entries)
+(define (lines . entries)
   (string-join (map expand-body entries) "\n"))
 
 (define (beg name body)
-  (lines (wrapped2 (command "begin" name)  (command "end" name) body)))
+  (lines 
+    (list
+      (command "begin" name) 
+      body
+      (command "end" name))))
 
 (define (beg2 name args body)
-  (lines (wrapped2 (command "begin" name args)  (command "end" name) body)))
+  (lines
+    (command "begin" name args)
+    body
+    (command "end" name)))
 
 (define (beg-opts name opts body)
   (lines
-    (wrapped2 
       (expand-body (list (command "begin" name) "[" opts "]")) 
-      (command "end" name) body)))
+      body
+      (command "end" name))) 
 
 (define (equation . body)
-  (beg "equation" (expand-body body)))
+  (beg "equation" body))
 
 (define (document body)
   (beg "document" body))
@@ -74,25 +81,35 @@
 
 (define (e^ . ...) (m-exp (expand-body ...)))
 
+(define (leftright left right . body)
+  (expand-body 
+    (list "\\left" left)
+    body
+    (list "\\right" right))) 
+  
 (define (parens . ...)
-  (expand-body (command-wrapped "left(" "right)" ...)))
+  (leftright "(" ")" ...))
 
 (define (brackets . ...)
-  (expand-body (command-wrapped "left[" "right]" ...)))
+  (leftright "[" "]" ...))
+
 (define (braces . ...)
-  (expand-body (command-wrapped "left\\{" "right\\}" ...)))
+  (leftright "{" "}" ...))
+
+(define (angs . body)
+  (expand-body 
+                        (command "langle")
+                        body
+                        (command "rangle")))
 
 (define (comma-sep . ...)
   (intersperse "," ...))
-
-(define (angs . ...)
-  (expand-body (command-wrapped "langle" "rangle" ...)))
 
 (define (_ var subscript)
   (expand-body var '_ "{" subscript "}"))
 
 (define (frac a b)
-  (expand-body (command2 "frac" a b)))
+  (expand-body (command "frac" a b)))
 
 (define / frac)
 
@@ -137,3 +154,18 @@
 (define bvect (curry vect "b"))
 (define (text . args) (command "text" (list " " args " ")))
 
+
+(module+ test
+  (require rackunit)
+
+  (check-equal?
+    (parens "body")
+    "\\left(body\\right)")
+
+  (check-equal?
+    (angs "body")
+    "\\langle body\\rangle ")
+
+  (check-equal?
+    (math "body")
+    "$body$"))

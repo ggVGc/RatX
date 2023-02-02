@@ -5,6 +5,6 @@
 
 (define (ket . x) (command "ket" x))
 (define (bra . x) (command "bra" x))
-(define braket (curry command2 "braket"))
-(define expval (curry command2 "expval"))
+(define braket (curry command "braket"))
+(define expval (curry command "expval"))
 

@@ -5,10 +5,7 @@
   expand-body
   intersperse
   wrapped
-  wrapped2
-  command-wrapped
-  command
-  command2)
+  command)
 
 (define (intersperse separator lst)
   (if (or (null? lst) (null? (cdr lst)))
@@ -27,22 +24,44 @@
     (item-to-string arg)))
 
 
-#| What does ~a do? |#
 (define (command name . args)
-  (if (null? args)
-    (~a "\\" name " ") 
-    (apply (curry command2 name) args)))
+  (expand-body
+    (list "\\" name
+      (if (null? args)
+        " "
+        (map 
+          (lambda (x) (list "{" x "}"))
+          args)))))
 
-(define (command2 name . args)
-    (~a "\\" name (string-join (map 
-                                (lambda (x) (string-join (list "{" (expand-body x) "}") ""))
-                                args) "")))
+(define (wrapped a . body)
+  (list a body a))
 
-(define (wrapped2 delim_a delim_b body)
-   (list delim_a body delim_b))
+(module+ test
+  (require rackunit)
 
-(define (wrapped delimiter body)
-   (wrapped2 delimiter delimiter body))
+  (check-equal?
+    (command "cmd")
+    "\\cmd ")
 
-(define (command-wrapped a b . body)
-   (list (command a) " " body " " (command b)))
+  (check-equal?
+    (command "cmd" "arg")
+    "\\cmd{arg}")
+
+  (check-equal?
+    (command "cmd" 12 'b)
+    "\\cmd{12}{b}")
+
+
+  (check-equal?
+    (wrapped "A" (list "body"))
+    (list
+      "A"
+      (list (list "body"))
+      "A"))
+
+  (check-equal?
+    (wrapped (command "cmd") "body")
+    (list
+      "\\cmd "
+      (list "body")
+      "\\cmd ")))
