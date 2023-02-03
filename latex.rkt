@@ -14,6 +14,7 @@
  pvect
  bvect
  math
+ math2
  $
  beg
  beg2
@@ -132,6 +133,13 @@
 
 (define (math . body)
   (expand-body (wrapped '$ body)))
+
+(define (math2 . body)
+  (expand-body 
+    (wrapped2 
+      (command "[") 
+      (command "]") 
+      body)))
 
 (define $ math)
 
