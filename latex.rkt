@@ -37,7 +37,8 @@
  align
  align*
  comma-sep
- alignpre)
+ alignpre
+ underbrace)
  
 
 
@@ -161,7 +162,8 @@
 (define pvect (curry vect "p"))
 (define bvect (curry vect "b"))
 (define (text . args) (command "text" (list " " args " ")))
-
+(define (underbrace tag . content)
+  (_ (command "underbrace" content) tag))
 
 (module+ test
   (require rackunit)

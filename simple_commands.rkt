@@ -25,3 +25,5 @@
 (define (eqref name) (command "eqref" name))
 (define (ref name) (command "ref" name))
 (define cdot (command 'cdot))
+(define Delta (command "Delta"))
+(define sigma (command "sigma"))

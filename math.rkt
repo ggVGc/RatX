@@ -9,7 +9,7 @@
       (/ (m-pow "d" degree) (list "d" (m-pow variable degree)))))
 
 
-(define (ln content)
+(define (ln . content)
   (command "ln" content))
 
 (define (sum start end . body)
