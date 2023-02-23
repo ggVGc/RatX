@@ -13,3 +13,4 @@
 (define Gamma (command 'Gamma))
 (define phi (command 'phi))
 (define psi (command 'psi))
+(define omega (command 'omega))

@@ -38,7 +38,9 @@
 (define (arcsin . args) (command 'arcsin args))
 (define (arccos . args) (command 'arccos args))
 (define approx (command 'approx))
+(define hbar (command 'hbar))
 (define + '+)
 (define = '=)
 (define - '-)
 (define prim "'")
+
