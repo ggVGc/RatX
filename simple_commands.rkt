@@ -26,4 +26,5 @@
 (define (ref name) (command "ref" name))
 (define cdot (command 'cdot))
 (define Delta (command "Delta"))
+(define delta (command "delta"))
 (define sigma (command "sigma"))

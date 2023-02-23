@@ -33,6 +33,7 @@
  angs
  _
  lines
+ newlines
  packages
  align
  align*
@@ -44,6 +45,9 @@
 
 (define (lines . entries)
   (string-join (map expand-body entries) "\n"))
+
+(define (newlines . entries)
+  (intersperse (command "\\") entries))
 
 (define (beg name body)
   (lines 
@@ -115,20 +119,17 @@
 
 (define / frac)
 
-(define (add-linebreaks rows)
-    (intersperse "\\\\\n" rows))
-
 (define (align . entries)
   (beg "align" 
-    (add-linebreaks (map (curry cons '&) entries))))
+    (apply newlines (map (curry cons '&) entries))))
       
 (define (alignpre pre . entries)
   (beg "align" 
-    (cons (list pre "\\\\") (add-linebreaks (map (curry cons '&) entries)))))
+    (cons (list pre "\\\\") (apply newlines (map (curry cons '&) entries)))))
 
 (define (align* . entries)
   (beg "align*"
-    (add-linebreaks (map (curry cons '&) entries))))
+    (apply newlines (map (curry cons '&) entries))))
 
 (define (packages . ...) (lines (map usepackage ...)))
 
@@ -146,7 +147,7 @@
 
 (define (matrix prefix . rows)
   (beg (string-append prefix "matrix") 
-      (add-linebreaks 
+      (apply newlines 
         (map (curry intersperse "&") rows))))
 
 (define (vec prefix . cols)
