@@ -17,12 +17,12 @@
     (^ (_ (command "sum") start) end)
     body))
 
+(define (abs v) (list "|" v "|"))
 (define (prod start end . body)
  (list
    (^ (_ (command "prod") start) end)
    body))
 
-(define (abs v) (command 'abs v))
 (define pi (command 'pi))
 (define epsilon (command 'epsilon))
 (define mu (command 'mu))

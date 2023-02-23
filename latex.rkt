@@ -39,7 +39,10 @@
  align*
  comma-sep
  alignpre
- underbrace)
+ underbrace
+ italic
+ bold
+ bibliography)
  
 
 
@@ -53,7 +56,9 @@
   (lines 
     (list
       (command "begin" name) 
+      "\n"
       body
+      "\n"
       (command "end" name))))
 
 (define (beg2 name args body)
@@ -180,3 +185,18 @@
   (check-equal?
     (math "body")
     "$body$"))
+
+(define (bibliography . entries)
+  (beg2 "thebibliography" "3" 
+    (map
+      (lambda (x)
+        (list
+          (command "bibitem" (first x))
+          (rest x)))
+      entries)))
+
+(define (italic x)
+  (command "textit" x))
+
+(define (bold x)
+  (command "textbf" x))
