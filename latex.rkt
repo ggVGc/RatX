@@ -25,11 +25,9 @@
  brackets
  braces
  e^
- /
  equation
  ^
  document
- frac
  angs
  _
  lines
@@ -40,6 +38,7 @@
  comma-sep
  alignpre
  underbrace
+ overbrace
  italic
  bold
  bibliography)
@@ -116,13 +115,12 @@
 (define (comma-sep . ...)
   (intersperse "," ...))
 
-(define (_ var subscript)
-  (expand-body var '_ "{" subscript "}"))
+(define (_ var . subscript)
+  (if
+    (null? subscript)
+    (list '_ "{" subscript "}")
+    (list var '_ "{" subscript "}")))
 
-(define (frac a b)
-  (expand-body (command "frac" a b)))
-
-(define / frac)
 
 (define (align . entries)
   (beg "align" 
@@ -170,6 +168,9 @@
 (define (text . args) (command "text" (list " " args " ")))
 (define (underbrace tag . content)
   (_ (command "underbrace" content) tag))
+
+(define (overbrace tag . content)
+  (^ (command "overbrace" content) tag))
 
 (module+ test
   (require rackunit)

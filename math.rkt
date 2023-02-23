@@ -18,18 +18,19 @@
     body))
 
 (define (abs v) (list "|" v "|"))
+
 (define (prod start end . body)
  (list
    (^ (_ (command "prod") start) end)
    body))
 
+(define (frac a b)
+  (command "frac" a b))
+
+(define / frac)
+
 (define pi (command 'pi))
-(define epsilon (command 'epsilon))
-(define mu (command 'mu))
 (define inf (command 'infty))
-(define theta (command 'theta))
-(define phi (command 'phi))
-(define psi (command 'psi))
 (define implies (command 'implies))
 (define pm (command 'pm))
 (define (cos . args) (command 'cos args))
@@ -40,4 +41,4 @@
 (define + '+)
 (define = '=)
 (define - '-)
-
+(define prim "'")
