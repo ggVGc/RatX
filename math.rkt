@@ -1,4 +1,6 @@
 #lang racket/base
+(require racket/match)
+
 (require "latex.rkt")
 
 (provide (all-defined-out))
@@ -24,6 +26,10 @@
    (^ (_ (command "prod") start) end)
    body))
 
+(define (sqrt . ...)
+  (command "sqrt" (expand-body ...)))
+
+
 (define (frac a b)
   (command "frac" a b))
 
@@ -44,3 +50,24 @@
 (define - '-)
 (define prim "'")
 
+(define (SI value . units)
+  (command "SI"
+    value
+    (match units
+      [(list entry) #:when (string? entry) entry]
+      [_ (map command units)])))
+
+(module+ test
+  (require rackunit)
+
+  (check-equal?
+    (SI 123 "hej" 'lol)
+    "\\SI{123}{\\hej \\lol }")
+
+  (check-equal?
+    (SI 123 "test")
+    "\\SI{123}{test}")
+
+  (check-equal?
+    (SI 123 'test)
+    "\\SI{123}{\\test }"))

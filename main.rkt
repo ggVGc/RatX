@@ -11,7 +11,7 @@
 #| (list 'A (e^ (list '\\alpha 't))) |#
 
 (define over-damped
-  (let ([cont (parens (m-sqrt (m-pow '\\omega_0 2) '- (/ (m-pow '\\gamma 2) 4)) 't)])
+  (let ([cont (parens (sqrt (m-pow '\\omega_0 2) '- (/ (m-pow '\\gamma 2) 4)) 't)])
     (list 
       (brackets 'A '\\cos cont '+ 'B '\\sin cont)
       (e^ '- (list '\\gamma 't) '/ 2))))
@@ -20,7 +20,7 @@
 (define under-damped
    (let [(cont
            (list 
-             't (m-sqrt 
+             't (sqrt 
                   (/ (^ '\\gamma 2) 4) 
                   '- 
                   '\\omega_0^2)))]

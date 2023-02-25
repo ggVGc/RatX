@@ -21,7 +21,6 @@
  beg-opts
  m-pow
  parens
- m-sqrt
  brackets
  braces
  e^
@@ -77,9 +76,6 @@
 
 (define (document body)
   (beg "document" body))
-
-(define (m-sqrt . ...)
-  (command "sqrt" (expand-body ...)))
 
 (define (m-pow val exponent)
   (expand-body (list val "^{" exponent "}")))
@@ -172,20 +168,6 @@
 (define (overbrace tag . content)
   (^ (command "overbrace" content) tag))
 
-(module+ test
-  (require rackunit)
-
-  (check-equal?
-    (parens "body")
-    "\\left(body\\right)")
-
-  (check-equal?
-    (angs "body")
-    "\\langle body\\rangle ")
-
-  (check-equal?
-    (math "body")
-    "$body$"))
 
 (define (bibliography . entries)
   (beg2 "thebibliography" "3" 
@@ -201,3 +183,18 @@
 
 (define (bold x)
   (command "textbf" x))
+
+(module+ test
+  (require rackunit)
+
+  (check-equal?
+    (parens "body")
+    "\\left(body\\right)")
+
+  (check-equal?
+    (angs "body")
+    "\\langle body\\rangle ")
+
+  (check-equal?
+    (math "body")
+    "$body$"))
