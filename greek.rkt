@@ -14,3 +14,4 @@
 (define phi (command 'phi))
 (define psi (command 'psi))
 (define omega (command 'omega))
+(define rho (command 'rho))
