@@ -78,10 +78,17 @@
 (define (document body)
   (beg "document" body))
 
-(define (m-pow val exponent)
-  (expand-body (list val "^{" exponent "}")))
+(define (m-pow val . exponent)
+  (if
+    (null? exponent)
+    (expand-body "^{" exponent "}")
+    (expand-body (list val "^{" exponent "}"))))
 
-(define ^ m-pow)
+(define (^ . args)
+  (if
+    (null? args)
+    '^
+    (apply m-pow args)))
 
 (define (m-exp exponent)
   (m-pow "e" exponent))
@@ -112,12 +119,17 @@
 (define (comma-sep . ...)
   (intersperse "," ...))
 
-(define (_ var . subscript)
+(define (underscore var . subscript)
   (if
     (null? subscript)
     (list '_ "{" subscript "}")
     (list var '_ "{" subscript "}")))
 
+(define (_ . args)
+  (if
+    (null? args)
+    '_
+    (apply underscore args)))
 
 (define (align . entries)
   (beg "align" 
@@ -167,7 +179,7 @@
   (_ (command "underbrace" content) tag))
 
 (define (overbrace tag . content)
-  (^ (command "overbrace" content) tag))
+  (m-pow (command "overbrace" content) tag))
 
 
 (define (bibliography . entries)

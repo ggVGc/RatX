@@ -17,3 +17,4 @@
 (define rho (command 'rho))
 (define lam (command 'lambda))
 (define kappa (command 'kappa))
+(define chi (command 'chi))

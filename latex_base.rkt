@@ -15,6 +15,7 @@
 
 (define (item-to-string val)
   (cond
+    [(procedure? val) (item-to-string (val))]
     [(string? val) val]
     [(number? val) (number->string val)]
     [(symbol? val) (symbol->string val)]))
