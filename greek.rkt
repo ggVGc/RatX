@@ -15,3 +15,5 @@
 (define psi (command 'psi))
 (define omega (command 'omega))
 (define rho (command 'rho))
+(define lam (command 'lambda))
+(define kappa (command 'kappa))

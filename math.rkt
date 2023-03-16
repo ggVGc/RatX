@@ -29,7 +29,6 @@
 (define (sqrt . ...)
   (command "sqrt" (expand-body ...)))
 
-
 (define (frac a b)
   (command "frac" a b))
 

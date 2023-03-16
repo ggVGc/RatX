@@ -16,7 +16,7 @@
 (define L 'L)
 (define M 'M)
 (define N 'N)
-(define O 'N)
+(define O 'O)
 (define P 'P)
 (define Q 'Q)
 (define R 'R)

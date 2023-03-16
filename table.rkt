@@ -6,7 +6,7 @@
   tabular)
 
 (define (table . body)
-  (beg-opts "table" "H"
+  (beg-opts "table" "!htb"
     (list
       (command "centering")
       "\n"
