@@ -40,7 +40,8 @@
  overbrace
  italic
  bold
- bibliography)
+ bibliography
+ alpha-subsections)
  
 
 
@@ -183,6 +184,11 @@
 
 (define (bold x)
   (command "textbf" x))
+
+(define (alpha-subsections)
+  (command "renewcommand"
+      (command "thesubsection")
+      (list (command "thesection") "." (command "alph" "subsection"))))
 
 (module+ test
   (require rackunit)
