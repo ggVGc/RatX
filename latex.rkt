@@ -81,8 +81,8 @@
 (define (m-pow val . exponent)
   (if
     (null? exponent)
-    (expand-body "^{" exponent "}")
-    (expand-body (list val "^{" exponent "}"))))
+    (list "^{" val "}")
+    (list val "^{" exponent "}")))
 
 (define (^ . args)
   (if
