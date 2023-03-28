@@ -22,6 +22,7 @@
 (def-simple hat "hat")
 (def-simple bar "bar")
 (def-simple cite 'cite)
+(def-simple input 'input)
 (define si (curry command "si"))
 (define caption (curry command "caption"))
 (define (label name) (command "label" name))

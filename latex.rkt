@@ -41,9 +41,20 @@
  italic
  bold
  bibliography
- alpha-subsections)
+ alpha-subsections
+ doc-begin
+ doc-end)
  
 
+(define (doc-begin title author [date ""])
+  (lines
+    (command 'title title)
+    (command 'author author)
+    (command 'date date)
+    (command 'begin 'document)
+    (command 'maketitle)))
+
+(define doc-end (command 'end 'document))
 
 (define (lines . entries)
   (string-join (map expand-body entries) "\n"))
