@@ -18,3 +18,4 @@
 (define lam (command 'lambda))
 (define kappa (command 'kappa))
 (define chi (command 'chi))
+(define alpha (command 'alpha))
