@@ -146,9 +146,9 @@
   (beg "align" 
     (apply newlines (map (curry cons '&) entries))))
       
-(define (alignpre pre . entries)
+(define (alignpre pre fst . entries)
   (beg "align" 
-    (cons (list pre "\\\\") (apply newlines (map (curry cons '&) entries)))))
+    (cons (list pre "&" fst "\\\\") (apply newlines (map (curry cons '&) entries)))))
 
 (define (align* . entries)
   (beg "align*"

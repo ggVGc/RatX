@@ -29,10 +29,8 @@
 (define (sqrt . ...)
   (command "sqrt" (expand-body ...)))
 
-(define (frac a b)
+(define (fraction a b)
   (command "frac" a b))
-
-(define / frac)
 
 (define pi (command 'pi))
 (define inf (command 'infty))
