@@ -21,6 +21,7 @@
 (def-simple dot "dot")
 (def-simple hat "hat")
 (def-simple bar "bar")
+(def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
 (define si (curry command "si"))

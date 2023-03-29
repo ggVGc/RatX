@@ -133,7 +133,7 @@
 (define (underscore var . subscript)
   (if
     (null? subscript)
-    (list '_ "{" subscript "}")
+    (list '_ "{" var "}")
     (list var '_ "{" subscript "}")))
 
 (define (_ . args)
