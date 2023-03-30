@@ -27,7 +27,6 @@
  document
  angs
  _
- lines
  newlines
  packages
  align
@@ -45,7 +44,10 @@
  make-title
  image
  smallimage
- side-by-side)
+ side-by-side
+ verbatim
+ subsection
+ subsection*)
  
 (define make-title (command 'maketitle))
 
@@ -58,8 +60,6 @@
 
 (define doc-end (command 'end 'document))
 
-(define (lines . entries)
-  (string-join (map expand-body entries) "\n"))
 
 (define (newlines . entries)
   (intersperse (command "\\") entries))
@@ -113,9 +113,9 @@
 
 (define (angs . body)
   (expand-body 
-                        (command "langle")
-                        body
-                        (command "rangle")))
+    (command "langle")
+    body
+    (command "rangle")))
 
 (define (comma-sep . ...)
   (intersperse "," ...))
@@ -147,7 +147,7 @@
 (define (packages . ...) (lines (map usepackage ...)))
 
 (define (math . body)
-  (expand-body (wrapped '$ body)))
+  (string-join (list "$" (expand-body body) "$") ""))
 
 (define (math2 . body)
   (expand-body 
@@ -230,6 +230,18 @@
                     (command 'centering)
                     b)))))))
   
+(define verbatim (curry beg 'verbatim))
+
+(define (subsection . ...)
+  (lines
+    ""
+    (command 'subsection ...)
+    ""))
+(define (subsection* . ...)
+  (lines
+    ""
+    (command 'subsection* ...)
+    ""))
 
 (module+ test
   (require rackunit)

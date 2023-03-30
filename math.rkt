@@ -5,10 +5,11 @@
 
 (provide (all-defined-out))
 
+
 (define (dd variable . degree)
   (if (null? degree)
-      (/ "d" (list "d" variable))
-      (/ (m-pow "d" degree) (list "d" (m-pow variable degree)))))
+      (fraction "d" (list "d" variable))
+      (fraction (m-pow "d" degree) (list "d" (m-pow variable degree)))))
 
 
 (define (ln . content)
@@ -32,6 +33,12 @@
 (define (fraction a b)
   (command "frac" a b))
 
+(define (part-deriv a b)
+  (fraction
+    (list partial a)
+    (list partial b)))
+
+(define partial (command 'partial))
 (define pi (command 'pi))
 (define inf (command 'infty))
 (define implies (command 'implies))

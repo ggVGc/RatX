@@ -5,7 +5,8 @@
   expand-body
   intersperse
   wrapped
-  command)
+  command
+  lines)
 
 (define (intersperse separator lst)
   (if (or (null? lst) (null? (cdr lst)))
@@ -36,6 +37,9 @@
 
 (define (wrapped a . body)
   (list a body a))
+
+(define (lines . entries)
+  (string-join (map expand-body entries) "\n"))
 
 (module+ test
   (require rackunit)
