@@ -6,14 +6,14 @@
   tabular)
 
 (define (table . body)
-  (beg-opts "table" "!htb"
+  (beg #:opt "!htb" "table"
     (list
       (command "centering")
       "\n"
       body)))
 
 (define (tabular config headers . entries)
-      (beg2 "tabular" config
+      (beg #:arg config "tabular"
         (list
           (command "toprule")
           (intersperse "&" headers)

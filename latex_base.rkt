@@ -5,7 +5,6 @@
   expand-body
   intersperse
   wrapped
-  wrapped2
   command)
 
 (define (intersperse separator lst)
@@ -37,9 +36,6 @@
 
 (define (wrapped a . body)
   (list a body a))
-
-(define (wrapped2 a b . body)
-  (list a body b))
 
 (module+ test
   (require rackunit)

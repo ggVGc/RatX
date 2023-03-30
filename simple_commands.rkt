@@ -24,6 +24,7 @@
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
+(define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
 (define caption (curry command "caption"))
 (define (label name) (command "label" name))

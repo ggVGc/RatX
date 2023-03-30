@@ -17,8 +17,6 @@
  math2
  $
  beg
- beg2
- beg-opts
  m-pow
  parens
  brackets
@@ -43,16 +41,20 @@
  bibliography
  alpha-subsections
  doc-begin
- doc-end)
+ doc-end
+ make-title
+ image
+ smallimage
+ side-by-side)
  
+(define make-title (command 'maketitle))
 
 (define (doc-begin title author [date ""])
   (lines
     (command 'title title)
     (command 'author author)
     (command 'date date)
-    (command 'begin 'document)
-    (command 'maketitle)))
+    (command 'begin 'document)))
 
 (define doc-end (command 'end 'document))
 
@@ -62,24 +64,12 @@
 (define (newlines . entries)
   (intersperse (command "\\") entries))
 
-(define (beg name body)
-  (lines 
-    (list
-      (command "begin" name) 
-      "\n"
-      body
-      "\n"
-      (command "end" name))))
-
-(define (beg2 name args body)
+(define (beg #:opt [opt null] #:arg [arg null] name body)
   (lines
-    (command "begin" name args)
-    body
-    (command "end" name)))
-
-(define (beg-opts name opts body)
-  (lines
-      (expand-body (list (command "begin" name) "[" opts "]")) 
+      (expand-body
+        (command "begin" name)
+        (if (null? opt) "" (list "[" opt "]")) 
+        (if (null? arg) "" (list "{" arg "}"))) 
       body
       (command "end" name))) 
 
@@ -161,10 +151,9 @@
 
 (define (math2 . body)
   (expand-body 
-    (wrapped2 
-      (command "[") 
-      (command "]") 
-      body)))
+    (command "[") 
+    body
+    (command "]"))) 
 
 (define $ math)
 
@@ -194,7 +183,7 @@
 
 
 (define (bibliography . entries)
-  (beg2 "thebibliography" "3" 
+  (beg #:args "3" "thebibliography" 
     (map
       (lambda (x)
         (list
@@ -212,6 +201,35 @@
   (command "renewcommand"
       (command "thesubsection")
       (list (command "thesection") "." (command "alph" "subsection"))))
+
+(define (image path)
+  (command "includegraphics[width=\\linewidth]" path))
+
+(define (smallimage path)
+  (command "includegraphics[width=0.5\\linewidth]" path))
+
+(define (side-by-side a b)
+  (lines
+    (beg
+      #:opt "t" 
+      #:arg (list 0.48 (command 'textwidth))
+      "minipage"
+      (list
+        (apply lines 
+          (flatten (list 
+                    (command 'centering)
+                    a)))))
+    (beg
+      #:opt "t" 
+      #:arg (list 0.48 (command 'textwidth))
+      "minipage"
+      (list
+        (apply lines 
+          (flatten (list 
+                    "{.48\\textwidth}"
+                    (command 'centering)
+                    b)))))))
+  
 
 (module+ test
   (require rackunit)
