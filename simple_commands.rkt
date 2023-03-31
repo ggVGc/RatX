@@ -16,7 +16,6 @@
               (command out-name (expand-body content))))))])))
  
 (def-simple section "section")
-(def-simple usepackage "usepackage")
 (def-simple dot "dot")
 (def-simple hat "hat")
 (def-simple bar "bar")
@@ -34,4 +33,13 @@
 (define delta (command "delta"))
 (define sigma (command "sigma"))
 (define (color c) (command 'color c))
+
+(define (texttt . ...)
+  (command 'texttt ...))
+
+(define monotext
+  (curry command 'monotext))
+
+(define (usepackage . ...)
+  (lines (intersperse "\n" (map (curry command "usepackage") ...))))
 

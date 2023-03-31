@@ -47,7 +47,8 @@
  side-by-side
  verbatim
  subsection
- subsection*)
+ subsection*
+ figure)
  
 (define make-title (command 'maketitle))
 
@@ -231,6 +232,9 @@
                     b)))))))
   
 (define verbatim (curry beg 'verbatim))
+
+(define (figure . ...)
+  (beg 'figure ...))
 
 (define (subsection . ...)
   (lines
