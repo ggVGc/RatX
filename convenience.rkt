@@ -2,9 +2,15 @@
 (provide 
   squared
   frac
-  hbar2)
+  hbar2
+  fig-here)
 
-(require (only-in "latex.rkt" ^))
+(require 
+  (only-in 
+    "latex.rkt" 
+    ^ 
+    figure))
+
 (require 
   (only-in 
     "math.rkt"
@@ -15,6 +21,9 @@
 
 (define squared (^ 2))
 (define hbar2 (list hbar squared))
+
+(define (fig-here . ...)
+  (figure #:opt "H" ...))
 
 
 (define-syntax (frac stx)

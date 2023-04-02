@@ -48,6 +48,8 @@
  verbatim
  subsection
  subsection*
+ subsubsection
+ subsubsection*
  figure)
  
 (define make-title (command 'maketitle))
@@ -65,12 +67,18 @@
 (define (newlines . entries)
   (intersperse (command "\\") entries))
 
+(define (opt-expand opt)
+  (if (null? opt) "" (list "[" opt "]")))
+
+(define (arg-expand arg)
+  (if (null? arg) "" (list "{" arg "}"))) 
+
 (define (beg #:opt [opt null] #:arg [arg null] name body)
   (lines
       (expand-body
         (command "begin" name)
-        (if (null? opt) "" (list "[" opt "]")) 
-        (if (null? arg) "" (list "{" arg "}"))) 
+        (opt-expand opt) 
+        (arg-expand arg))
       body
       (command "end" name))) 
 
@@ -175,7 +183,12 @@
 (define bvec (curry vec "b"))
 (define pvect (curry vect "p"))
 (define bvect (curry vect "b"))
-(define (text . args) (command "text" (list " " args " ")))
+
+#| (define (text . args) (command "text" (list " " args " "))) |#
+(define (text . content)
+  (command 'text content))
+
+
 (define (underbrace tag . content)
   (_ (command "underbrace" content) tag))
 
@@ -233,19 +246,20 @@
   
 (define verbatim (curry beg 'verbatim))
 
-(define (figure . ...)
-  (beg 'figure ...))
+(define (figure #:opt [opt null] . body)
+  (beg #:opt opt 'figure body))
 
 (define (subsection . ...)
-  (lines
-    ""
-    (command 'subsection ...)
-    ""))
+  (lines "" (command 'subsection ...) ""))
+
+(define (subsubsection . ...)
+ (lines "" (command 'subsubsection ...) ""))
+
+(define (subsubsection* . ...)
+ (lines "" (command 'subsubsection* ...) ""))
+
 (define (subsection* . ...)
-  (lines
-    ""
-    (command 'subsection* ...)
-    ""))
+  (lines "" (command 'subsection* ...) ""))
 
 (module+ test
   (require rackunit)

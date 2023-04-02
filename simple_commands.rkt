@@ -24,22 +24,27 @@
 (def-simple input 'input)
 (define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
-(define caption (curry command "caption"))
+(define (caption . content) (command 'caption content))
 (define (label name) (command "label" name))
-(define (eqref name) (command "eqref" name))
+(define (eqref name) (command "eqref" (list "eq:" name)))
 (define (ref name) (command "ref" name))
 (define cdot (command 'cdot))
 (define Delta (command "Delta"))
 (define delta (command "delta"))
 (define sigma (command "sigma"))
 (define (color c) (command 'color c))
+(define (underline . content)
+  (command 'underline content))
 
-(define (texttt . ...)
-  (command 'texttt ...))
+(define (texttt content)
+  (command 'texttt content))
 
-(define monotext
-  (curry command 'monotext))
+(define (monotext . content)
+  (command 'monotext content))
 
-(define (usepackage . ...)
-  (lines (intersperse "\n" (map (curry command "usepackage") ...))))
+(define (boxed . content)
+  (command 'boxed content))
+
+(define (usepackage . content)
+  (lines (intersperse "\n" (map (curry command "usepackage") content))))
 
