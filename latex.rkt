@@ -98,7 +98,7 @@
   (if
     (null? args)
     '^
-    (m-pow "" args)))
+    (apply m-pow args)))
 
 (define (m-exp exponent)
   (m-pow "e" exponent))
