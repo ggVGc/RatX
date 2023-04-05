@@ -59,7 +59,7 @@
     value
     (match units
       [(list entry) #:when (string? entry) entry]
-      [_ (map command units)])))
+      [_ (map (lambda (u) (list "\\" u)) units)])))
 
 (module+ test
   (require rackunit)
