@@ -1,20 +1,18 @@
 #lang racket
 (require "latex_base.rkt")
 
-(provide (all-defined-out))
+(provide (except-out (all-defined-out) def-simple))
 (require (for-syntax syntax/parse))
 
 (define-syntax def-simple           ; bind define2 to a
   (lambda (stx)                  ; syntax transformer that
     (syntax-parse stx            ; matches stx against
       [(_def-simple name out-name) ; this pattern, and produces
-       (let (
-              [asdf 123]) 
-         (syntax                   ; a new syntax object
+       (syntax                   ; a new syntax object
            (begin                   ; following this template
              (define (name . content) 
-              (command out-name (expand-body content))))))])))
- 
+              (command out-name (expand-body content)))))])))
+
 (def-simple section "section")
 (def-simple dot "dot")
 (def-simple hat "hat")
@@ -22,6 +20,7 @@
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
+
 (define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
 (define (caption . content) (command 'caption content))
