@@ -30,6 +30,7 @@
  newlines
  packages
  align
+ aligned
  align*
  comma-sep
  alignpre
@@ -65,7 +66,7 @@
 
 
 (define (newlines . entries)
-  (intersperse (command "\\") entries))
+  (intersperse "\\\\\n" entries))
 
 (define (opt-expand opt)
   (if (null? opt) "" (list "[" opt "]")))
@@ -142,9 +143,11 @@
     (apply underscore args)))
 
 (define (align . entries)
-  (beg "align" 
-    (apply newlines (map (curry cons '&) entries))))
+  (beg "align" (apply newlines entries))) 
       
+(define (aligned . body)
+  (list '& body))
+
 (define (alignpre pre fst . entries)
   (beg "align" 
     (cons (list pre "&" fst "\\\\") (apply newlines (map (curry cons '&) entries)))))

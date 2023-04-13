@@ -5,6 +5,8 @@
 
 (provide (all-defined-out))
 
+(define > ">")
+(define < "<")
 
 (define (dd variable . degree)
   (if (null? degree)
@@ -20,7 +22,7 @@
     (^ (_ (command "sum") start) end)
     body))
 
-(define (abs v) (list "|" v "|"))
+(define (abs . v) (list "|" v "|"))
 
 (define (prod start end . body)
  (list
