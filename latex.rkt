@@ -30,7 +30,6 @@
  newlines
  packages
  align
- aligned
  align*
  comma-sep
  alignpre
@@ -63,7 +62,6 @@
     (command 'begin 'document)))
 
 (define doc-end (command 'end 'document))
-
 
 (define (newlines . entries)
   (intersperse "\\\\\n" entries))
@@ -143,11 +141,9 @@
     (apply underscore args)))
 
 (define (align . entries)
-  (beg "align" (apply newlines entries))) 
+  (beg "align" 
+    (apply newlines (map (curry cons '&) entries))))
       
-(define (aligned . body)
-  (list '& body))
-
 (define (alignpre pre fst . entries)
   (beg "align" 
     (cons (list pre "&" fst "\\\\") (apply newlines (map (curry cons '&) entries)))))
