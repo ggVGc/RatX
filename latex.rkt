@@ -30,6 +30,7 @@
  newlines
  packages
  align
+ align-on
  align*
  comma-sep
  alignpre
@@ -143,10 +144,23 @@
 (define (align . entries)
   (beg "align" 
     (apply newlines (map (curry cons '&) entries))))
+
+(define (align-on aligner . lines)
+  (define align-str (item-to-string aligner))
+
+  (beg "align" 
+   (string-replace 
+     (expand-body (apply newlines lines)) 
+     align-str 
+     (string-append "&" align-str))))
+
       
 (define (alignpre pre fst . entries)
   (beg "align" 
-    (cons (list pre "&" fst "\\\\") (apply newlines (map (curry cons '&) entries)))))
+    (cons 
+      (list pre '& fst "\\\\") 
+      (apply newlines 
+        (map (curry cons '&) entries)))))
 
 (define (align* . entries)
   (beg "align*"
