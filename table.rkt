@@ -3,27 +3,39 @@
 
 (provide
   table
+  table-env
   tabular)
 
-(define (table . body)
-  (beg #:opt "!htb" "table"
+(define (table headers #:config [config null] . body)
+  (table-env
+    (if (null? config)
+      (apply tabular headers body)
+      (apply tabular headers #:config config body)))) 
+
+
+(define (table-env #:opt [opt "!htb"] . body)
+  (beg #:opt opt "table"
     (list
       (command "centering")
       "\n"
       body)))
 
-(define (tabular config headers . entries)
-      (beg #:arg config "tabular"
-        (list
-          (command "toprule")
-          (intersperse "&" headers)
-          (command "\\")
-          (command "midrule")
-          "\n"
-          (map
-            (lambda (x) 
-              (list 
-                (intersperse " & " x)
-                (command "\\\n")))
-            entries)
-          (command "bottomrule"))))
+(define (tabular headers 
+          #:config [config (make-list (length headers) "l")] 
+          . entries)
+
+  (beg #:arg config "tabular"
+    (list
+      (command "toprule")
+      (intersperse "&" headers)
+      (command "\\")
+      (command "midrule")
+      "\n"
+      (map
+        (lambda (x) 
+          (list 
+            (intersperse " & " x)
+            (command "\\\n")))
+        entries)
+      (command "bottomrule"))))
+
