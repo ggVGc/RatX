@@ -57,11 +57,22 @@
 (define prim "'")
 
 (define (SI value . units)
+  (define (build-units x)
+    (map (lambda (u) (list "\\" u)) x))
+
   (command "SI"
     value
     (match units
       [(list entry) #:when (string? entry) entry]
-      [_ (map (lambda (u) (list "\\" u)) units)])))
+      [(list entry) #:when (list? entry) 
+          (build-units entry)]          
+      [_ 
+        (build-units units)])))
+
+(define (SI-err val err . units)
+  (apply SI
+    (list val pm err)
+    units))
 
 (module+ test
   (require rackunit)

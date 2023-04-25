@@ -6,11 +6,24 @@
   table-env
   tabular)
 
-(define (table headers #:config [config null] . body)
+(define (add-label content)
+  (if (null? content)
+    ""
+    (label content)))
+
+(define (add-caption content)
+  (if (null? content)
+    ""
+    (caption content)))
+ 
+
+(define (table headers #:config [config null] #:caption [cap null] #:label [lab null] . body)
   (table-env
     (if (null? config)
       (apply tabular headers body)
-      (apply tabular headers #:config config body)))) 
+      (apply tabular headers #:config config body))
+    (add-caption cap) 
+    (add-label lab))) 
 
 
 (define (table-env #:opt [opt "!htb"] . body)

@@ -44,6 +44,7 @@
  doc-end
  make-title
  image
+ imagew
  smallimage
  side-by-side
  verbatim
@@ -232,6 +233,9 @@
 (define (image path)
   (command "includegraphics[width=\\linewidth]" path))
 
+(define (imagew width path)
+  (command (list "includegraphics[width=" width "\\linewidth]") path))
+
 (define (smallimage path)
   (command "includegraphics[width=0.5\\linewidth]" path))
 
@@ -259,7 +263,7 @@
   
 (define verbatim (curry beg 'verbatim))
 
-(define (figure #:opt [opt null] . body)
+(define (figure #:opt [opt "H"] . body)
   (beg #:opt opt 'figure body))
 
 (define (subsection . ...)

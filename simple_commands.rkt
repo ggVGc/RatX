@@ -27,6 +27,12 @@
 (define (label name) (command "label" name))
 (define (eqref name) (command "eqref" (list "eq:" name)))
 (define (ref name) (command "ref" name))
+(define (figref name) (list
+                        "Figure "
+                        (command "ref" name)))
+(define (tabref name) (list
+                        "Table "
+                        (command "ref" name)))
 (define cdot (command 'cdot))
 (define Delta (command "Delta"))
 (define delta (command "delta"))

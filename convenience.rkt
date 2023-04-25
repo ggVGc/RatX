@@ -3,7 +3,12 @@
   squared
   frac
   hbar2
-  fig-here)
+  fig-here
+  paragraph
+  ~)
+
+(define (paragraph . ...) (string-join (flatten (list ... "\n"))  ""))
+(define ~ paragraph)
 
 (require 
   (only-in 
