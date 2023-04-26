@@ -6,7 +6,7 @@ while also learning Racket.
 
 Example:
 ```racket
-;vim: ft=racket.ratx
+; vim: ft=racket.ratx
 
 #lang at-exp s-exp (file "~/stuff/RatX/display-all.rkt")
 
