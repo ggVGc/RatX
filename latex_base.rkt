@@ -26,14 +26,23 @@
     (item-to-string arg)))
 
 
-(define (command name . args)
+(define (command name #:opts [opts null] . args)
+  (define (wrapped-args)
+    (if (null? args) 
+      " "
+      (map (lambda (x) (list "{" x "}"))
+         args))) 
+
+  (define (wrapped-opts)
+    (if (null? opts) 
+      ""
+      (list "[" (intersperse "," opts) "]")))
+         
+
   (expand-body
     (list "\\" name
-      (if (null? args)
-        " "
-        (map 
-          (lambda (x) (list "{" x "}"))
-          args)))))
+      (wrapped-opts)
+      (wrapped-args))))
 
 (define (wrapped a . body)
   (list a body a))

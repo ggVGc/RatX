@@ -3,12 +3,8 @@
   squared
   frac
   hbar2
-  fig-here
   paragraph
   ~)
-
-(define (paragraph . ...) (string-join (flatten (list ... "\n"))  ""))
-(define ~ paragraph)
 
 (require 
   (only-in 
@@ -22,21 +18,26 @@
     fraction
     hbar))
 
+(define (paragraph . ...) 
+  (string-join ...)
+  #| (string-join (flatten (list ... "\n"))  "")) |#)
+
+(define ~ paragraph)
+
+
 (require (for-syntax racket/base))
 
 (define squared (^ 2))
 (define hbar2 (list hbar squared))
 
-(define (fig-here . ...)
-  (figure #:opt "H" ...))
-
 
 (define-syntax (frac stx)
   (syntax-case stx ()
-    [(_ a b) #'(
-                fraction 
-                (list-wrap a)
-                (list-wrap b))]))
+    [(_ a b) 
+     #'(
+        fraction 
+        (list-wrap a)
+        (list-wrap b))]))
 
 (define-syntax (list-wrap stx)
   (syntax-case stx ()

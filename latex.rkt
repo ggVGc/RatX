@@ -267,16 +267,20 @@
   (beg #:opt opt 'figure body))
 
 (define (subsection . ...)
-  (lines "" (command 'subsection ...) ""))
+  (command 'subsection ...)
+  #| (lines "" (command 'subsection ...) "")) |#)
 
 (define (subsubsection . ...)
- (lines "" (command 'subsubsection ...) ""))
+ (command 'subsubsection ...)
+ #| (lines "" (command 'subsubsection ...) "")) |#)
 
 (define (subsubsection* . ...)
- (lines "" (command 'subsubsection* ...) ""))
+ (command 'subsubsection* ...)
+ #| (lines "" (command 'subsubsection* ...) "")) |#)
 
 (define (subsection* . ...)
-  (lines "" (command 'subsection* ...) ""))
+  (command 'subsection* ...)
+  #| (lines "" (command 'subsection* ...) "")) |#)
 
 (module+ test
   (require rackunit)
