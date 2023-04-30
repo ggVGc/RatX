@@ -32,6 +32,7 @@
  align
  align-on
  align*
+ separated
  comma-sep
  alignpre
  underbrace
@@ -127,8 +128,11 @@
     body
     (command "rangle")))
 
+(define (separated separator . ...)
+  (expand-body (intersperse separator ...)))
+
 (define (comma-sep . ...)
-  (intersperse "," ...))
+  (apply separated "," ...))
 
 (define (underscore var . subscript)
   (if

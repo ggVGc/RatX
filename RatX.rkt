@@ -7,6 +7,7 @@
 (require "letters.rkt")
 (require "greek.rkt")
 (require "documentclass.rkt")
+(require "packages.rkt")
 
 (provide (all-from-out "latex.rkt"))
 (provide (all-from-out "math.rkt"))
@@ -16,3 +17,4 @@
 (provide (all-from-out "letters.rkt"))
 (provide (all-from-out "greek.rkt"))
 (provide (all-from-out "documentclass.rkt"))
+(provide (all-from-out "packages.rkt"))
