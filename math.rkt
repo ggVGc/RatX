@@ -22,7 +22,7 @@
     (^ (_ (command "sum") start) end)
     body))
 
-(define (abs . v) (list "|" v "|"))
+(define (abs . v) (list "\\left|" v "\\right|"))
 
 (define (prod start end . body)
  (list
@@ -47,6 +47,7 @@
 (define pm (command 'pm))
 (define (cos . args) (command 'cos args))
 (define (sin . args) (command 'sin args))
+(define (tan . args) (command 'tan args))
 (define (arcsin . args) (command 'arcsin args))
 (define (arccos . args) (command 'arccos args))
 (define approx (command 'approx))

@@ -51,6 +51,7 @@
 (define t 't)
 (define u 'u)
 (define v 'v)
+(define w 'w)
 (define x 'x)
 (define y 'y)
 (define z 'z)

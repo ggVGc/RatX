@@ -174,7 +174,9 @@
 (define (packages . ...) (lines (map usepackage ...)))
 
 (define (math . body)
-  (string-join (list "$" (expand-body body) "$") ""))
+  (string-join 
+    (list "$" (expand-body body) "$") 
+    ""))
 
 (define (math2 . body)
   (expand-body 

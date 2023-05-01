@@ -19,7 +19,7 @@
     hbar))
 
 (define (paragraph . ...) 
-  (string-join ...)
+  (string-join ... "")
   #| (string-join (flatten (list ... "\n"))  "")) |#)
 
 (define ~ paragraph)
