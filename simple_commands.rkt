@@ -20,6 +20,8 @@
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
+(def-simple to 'to)
+(def-simple propto 'propto)
 
 (define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
@@ -50,6 +52,19 @@
 (define (boxed . content)
   (command 'boxed content))
 
-(define (usepackage . content)
-  (lines (intersperse "\n" (map (curry command "usepackage") content))))
+(define (usepackage name . opts)
+  (command #:opts opts 'usepackage name))
+
+(define (usepackages . packages)
+  (lines 
+    (intersperse "\n" 
+     (map 
+       (λ (entry)
+         (match entry
+           [(list name opts)
+            (apply usepackage name opts)] 
+           [name
+             #:when (not (list? name))
+             (usepackage name)]))
+       packages))))
 

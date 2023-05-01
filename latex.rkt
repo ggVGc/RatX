@@ -245,25 +245,20 @@
 
 (define (side-by-side a b)
   (lines
-    (beg
-      #:opt "t" 
-      #:arg (list 0.48 (command 'textwidth))
-      "minipage"
-      (list
-        (apply lines 
-          (flatten (list 
-                    (command 'centering)
-                    a)))))
-    (beg
-      #:opt "t" 
-      #:arg (list 0.48 (command 'textwidth))
-      "minipage"
-      (list
-        (apply lines 
-          (flatten (list 
-                    "{.48\\textwidth}"
-                    (command 'centering)
-                    b)))))))
+    (sbs-page a)
+    (sbs-page b)))
+
+
+(define (sbs-page page)
+ (beg
+   #:opt "t" 
+   #:arg (list 0.48 (command 'textwidth))
+   "minipage"
+   (list 
+     (apply lines 
+       (flatten (list 
+                 (command 'centering)
+                 page))))))     
   
 (define verbatim (curry beg 'verbatim))
 

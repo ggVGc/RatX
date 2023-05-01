@@ -24,6 +24,7 @@
 (define T 'T)
 (define U 'U)
 (define V 'V)
+(define W 'W)
 (define X 'X)
 (define Y 'Y)
 (define Z 'Z)
