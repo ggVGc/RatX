@@ -49,6 +49,7 @@
  smallimage
  side-by-side
  verbatim
+ section-start
  subsection
  subsection*
  subsubsection
@@ -266,6 +267,9 @@
 
 (define (figure #:opt [opt "H"] . body)
   (beg #:opt opt 'figure body))
+
+(define (section-start n)
+  (command "setcounter" "section" 8))
 
 (define (subsection . ...)
   (command 'subsection ...)
