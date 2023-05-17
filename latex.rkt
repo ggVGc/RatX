@@ -31,6 +31,7 @@
  packages
  align
  align-on
+ align-on*
  align*
  separated
  comma-sep
@@ -155,6 +156,15 @@
   (define align-str (item-to-string aligner))
 
   (beg "align" 
+   (string-replace 
+     (expand-body (apply newlines lines)) 
+     align-str 
+     (string-append "&" align-str))))
+
+(define (align-on* aligner . lines)
+  (define align-str (item-to-string aligner))
+
+  (beg "align*" 
    (string-replace 
      (expand-body (apply newlines lines)) 
      align-str 

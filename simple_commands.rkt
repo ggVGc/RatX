@@ -17,6 +17,7 @@
 (def-simple dot "dot")
 (def-simple hat "hat")
 (def-simple bar "bar")
+(def-simple overline "overline")
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
@@ -27,9 +28,9 @@
 (define si (curry command "si"))
 (define (caption . content) (command 'caption content))
 (define (label name) (command "label" name))
-(define (eqref name) (command "eqref" (list "eq:" name)))
+(define (eqref name) (command "eqref" (string-append "eq:" name)))
 (define (ref name) (command "ref" name))
-(define (figref name) (list
+(define (figref name) (string-append
                         "Figure "
                         (command "ref" name)))
 (define (tabref name) (list
