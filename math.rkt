@@ -80,7 +80,7 @@
 
   (check-equal?
     (SI 123 "hej" 'lol)
-    "\\SI{123}{\\hej \\lol }")
+    "\\SI{123}{\\hej\\lol}")
 
   (check-equal?
     (SI 123 "test")
@@ -88,4 +88,4 @@
 
   (check-equal?
     (SI 123 'test)
-    "\\SI{123}{\\test }"))
+    "\\SI{123}{\\test}"))
