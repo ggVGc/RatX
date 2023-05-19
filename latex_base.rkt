@@ -22,8 +22,8 @@
     [(string? val) val]
     [(number? val) (number->string val)]
     [(symbol? val) (symbol->string val)]
-    ; [(procedure? val) (item-to-string (val))]
-    [(procedure? val) (raise-argument-error 'item-to-string "non-procedure" val)]
+    [(procedure? val) (item-to-string (val))]
+    ; [(procedure? val) (raise-argument-error 'item-to-string "non-procedure" val)]
     [else '()]))
 
 
