@@ -1,12 +1,16 @@
 #lang racket
 
-(provide 
-  item-to-string
-  expand-body
-  intersperse
-  wrapped
-  command
-  lines)
+(provide
+ item-to-string
+ expand-body
+ intersperse
+ wrapped
+ command
+ lines)
+
+(define (debug msg x)
+  (printf "~a: ~a~n" msg x)
+  x)
 
 (define (intersperse separator lst)
   (if (or (null? lst) (null? (cdr lst)))
@@ -15,67 +19,91 @@
 
 (define (item-to-string val)
   (cond
-    [(procedure? val) (item-to-string (val))]
     [(string? val) val]
     [(number? val) (number->string val)]
-    [(symbol? val) (symbol->string val)]))
+    [(symbol? val) (symbol->string val)]
+    ; [(procedure? val) (item-to-string (val))]
+    [(procedure? val) (raise-argument-error 'item-to-string "non-procedure" val)]
+    [else '()]))
+
 
 (define (expand-body . arg)
-  (if (list? arg)
-    (string-join (map item-to-string (flatten arg)) "")
-    (item-to-string arg)))
+  (match (item-to-string arg)
+    ['()
+     (string-join (map item-to-string (flatten arg)) "")]
+    [x x]))
+
 
 
 (define (command name #:opts [opts null] . args)
-  (define (wrapped-args)
-    (if (null? args) 
-      " "
-      (map (lambda (x) (list "{" x "}"))
-         args))) 
+  (define wrapped-opts
+    (if (null? opts)
+        null
+        (list "[" (intersperse "," opts) "]")))
 
-  (define (wrapped-opts)
-    (if (null? opts) 
-      ""
-      (list "[" (intersperse "," opts) "]")))
-         
+  (define wrapped-args
+    (if (null? args)
+        (list " ")
+        (for/list ([a args])
+          (list "{" a "}"))))
 
-  (expand-body
-    (list "\\" name
-      (wrapped-opts)
-      (wrapped-args))))
+  (append
+   (list "\\" name) 
+   wrapped-opts
+   wrapped-args))
 
-(define (wrapped a . body)
+
+(define (wrapped a body)
   (list a body a))
 
 (define (lines . entries)
-  (string-join (map expand-body entries) "\n"))
+  (intersperse "\n" entries))
 
 (module+ test
   (require rackunit)
+  ; (define (show x) 
+  ;   (string-join (map item-to-string x) ""))
 
-  (check-equal?
-    (command "cmd")
-    "\\cmd ")
+  (test-case "expand-body"
+             (check-equal?
+              (expand-body (list 1 2))
+              "12") 
 
-  (check-equal?
-    (command "cmd" "arg")
-    "\\cmd{arg}")
-
-  (check-equal?
-    (command "cmd" 12 'b)
-    "\\cmd{12}{b}")
+             (check-equal?
+              (expand-body (list 1 2))
+              "12"))
 
 
-  (check-equal?
-    (wrapped "A" (list "body"))
-    (list
-      "A"
-      (list (list "body"))
-      "A"))
+  (test-case "command"
+             (check-equal?
+              (command "cmd")
+              (list "\\" "cmd" " "))
 
-  (check-equal?
-    (wrapped (command "cmd") "body")
-    (list
-      "\\cmd "
-      (list "body")
-      "\\cmd ")))
+             (check-equal?
+              (command "cmd" "arg")
+              (list  "\\" "cmd" 
+                     (list "{" "arg" "}")))
+
+             (check-equal?
+              (command "cmd" 12 'b)
+
+              (list  "\\" "cmd"
+                     (list "{" 12 "}")
+                     (list "{" 'b "}"))))
+
+  (test-case "wrapped"
+             (let*
+                 ([thing (list "body")])
+               (check-equal?
+                (wrapped "A" thing)
+                (list "A" thing "A")))
+
+             (let*
+                 ([wrapper (command "cmd")])
+               (check-equal?
+                (wrapped wrapper "body")
+                (list wrapper "body" wrapper)))))
+
+
+
+

@@ -6,57 +6,57 @@
 (provide (all-from-out "simple_commands.rkt"))
 
 (provide
- text
- pmatrix
- bmatrix
- pvec
- bvec
- pvect
- bvect
- math
- math2
- $
- beg
- m-pow
- parens
- brackets
- braces
- e^
- equation
- ^
- document
- angs
- _
- newlines
- packages
- align
- align-on
- align-on*
- align*
- separated
- comma-sep
- alignpre
- underbrace
- overbrace
- italic
- bold
- bibliography
- alpha-subsections
- doc-begin
- doc-end
- make-title
- image
- imagew
- smallimage
- side-by-side
- verbatim
- section-start
- subsection
- subsection*
- subsubsection
- subsubsection*
- figure)
- 
+  text
+  pmatrix
+  bmatrix
+  pvec
+  bvec
+  pvect
+  bvect
+  math
+  math2
+  $
+  beg
+  m-pow
+  parens
+  brackets
+  braces
+  e^
+  equation
+  ^
+  document
+  angs
+  _
+  newlines
+  packages
+  align
+  align-on
+  align-on*
+  align*
+  separated
+  comma-sep
+  alignpre
+  underbrace
+  overbrace
+  italic
+  bold
+  bibliography
+  alpha-subsections
+  doc-begin
+  doc-end
+  make-title
+  image
+  imagew
+  smallimage
+  side-by-side
+  verbatim
+  section-start
+  subsection
+  subsection*
+  subsubsection
+  subsubsection*
+  figure)
+
 (define make-title (command 'maketitle))
 
 (define (doc-begin title author [date ""])
@@ -72,19 +72,19 @@
   (intersperse "\\\\\n" entries))
 
 (define (opt-expand opt)
-  (if (null? opt) "" (list "[" opt "]")))
+  (if (null? opt) null (list "[" opt "]")))
 
 (define (arg-expand arg)
-  (if (null? arg) "" (list "{" arg "}"))) 
+  (if (null? arg) null (list "{" arg "}"))) 
 
 (define (beg #:opt [opt null] #:arg [arg null] name body)
   (lines
-      (expand-body
-        (command "begin" name)
-        (opt-expand opt) 
-        (arg-expand arg))
-      body
-      (command "end" name))) 
+    (list
+      (command "begin" name)
+      (opt-expand opt) 
+      (arg-expand arg))
+    body
+    (command "end" name))) 
 
 (define (equation . body)
   (beg "equation" body))
@@ -107,14 +107,14 @@
 (define (m-exp exponent)
   (m-pow "e" exponent))
 
-(define (e^ . ...) (m-exp (expand-body ...)))
+(define (e^ . ...) (m-exp ...))
 
 (define (leftright left right . body)
-  (expand-body 
+  (list 
     (list "\\left" left)
     body
     (list "\\right" right))) 
-  
+
 (define (parens . ...)
   (leftright "(" ")" ...))
 
@@ -125,13 +125,13 @@
   (leftright "{" "}" ...))
 
 (define (angs . body)
-  (expand-body 
+  (list 
     (command "langle")
     body
     (command "rangle")))
 
 (define (separated separator . ...)
-  (expand-body (intersperse separator ...)))
+  (intersperse separator ...))
 
 (define (comma-sep . ...)
   (apply separated "," ...))
@@ -150,47 +150,45 @@
 
 (define (align . entries)
   (beg "align" 
-    (apply newlines (map (curry cons '&) entries))))
+       (apply newlines (map (curry cons '&) entries))))
 
 (define (align-on aligner . lines)
   (define align-str (item-to-string aligner))
 
   (beg "align" 
-   (string-replace 
-     (expand-body (apply newlines lines)) 
-     align-str 
-     (string-append "&" align-str))))
+       (string-replace 
+         (expand-body (apply newlines lines)) 
+         align-str 
+         (string-append "&" align-str))))
 
 (define (align-on* aligner . lines)
   (define align-str (item-to-string aligner))
 
   (beg "align*" 
-   (string-replace 
-     (expand-body (apply newlines lines)) 
-     align-str 
-     (string-append "&" align-str))))
+       (string-replace 
+         (expand-body (apply newlines lines)) 
+         align-str 
+         (string-append "&" align-str))))
 
-      
+
 (define (alignpre pre fst . entries)
   (beg "align" 
-    (cons 
-      (list pre '& fst "\\\\") 
-      (apply newlines 
-        (map (curry cons '&) entries)))))
+       (cons 
+         (list pre '& fst "\\\\") 
+         (apply newlines 
+                (map (curry cons '&) entries)))))
 
 (define (align* . entries)
   (beg "align*"
-    (apply newlines (map (curry cons '&) entries))))
+       (apply newlines (map (curry cons '&) entries))))
 
 (define (packages . ...) (lines (map usepackage ...)))
 
 (define (math . body)
-  (string-join 
-    (list "$" (expand-body body) "$") 
-    ""))
+  (wrapped "$" body))
 
 (define (math2 . body)
-  (expand-body 
+  (list 
     (command "[") 
     body
     (command "]"))) 
@@ -199,15 +197,15 @@
 
 (define (matrix prefix . rows)
   (beg (string-append prefix "matrix") 
-      (apply newlines 
-        (map (curry intersperse "&") rows))))
+       (apply newlines 
+              (map (curry intersperse "&") rows))))
 
 (define (vec prefix . cols)
   (matrix prefix cols))
 
 (define (vect prefix . cols)
   (apply (curry matrix prefix) (map list cols)))
-  
+
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
 (define pvec (curry vec "p"))
@@ -229,12 +227,12 @@
 
 (define (bibliography . entries)
   (beg #:args "3" "thebibliography" 
-    (map
-      (lambda (x)
-        (list
-          (command "bibitem" (first x))
-          (rest x)))
-      entries)))
+       (map
+         (lambda (x)
+           (list
+             (command "bibitem" (first x))
+             (rest x)))
+         entries)))
 
 (define (italic x)
   (command "textit" x))
@@ -244,8 +242,8 @@
 
 (define (alpha-subsections)
   (command "renewcommand"
-      (command "thesubsection")
-      (list (command "thesection") "." (command "alph" "subsection"))))
+           (command "thesubsection")
+           (list (command "thesection") "." (command "alph" "subsection"))))
 
 (define (image path)
   (command "includegraphics[width=\\linewidth]" path))
@@ -263,35 +261,35 @@
 
 
 (define (sbs-page page)
- (beg
-   #:opt "t" 
-   #:arg (list 0.48 (command 'textwidth))
-   "minipage"
-   (list 
-     (apply lines 
-       (flatten (list 
-                 (command 'centering)
-                 page))))))     
-  
+  (beg
+    #:opt "t" 
+    #:arg (list 0.48 (command 'textwidth))
+    "minipage"
+    (list 
+      (apply lines 
+             (flatten (list 
+                        (command 'centering)
+                        page))))))     
+
 (define verbatim (curry beg 'verbatim))
 
 (define (figure #:opt [opt "H"] . body)
   (beg #:opt opt 'figure body))
 
 (define (section-start n)
-  (command "setcounter" "section" 8))
+  (command "setcounter" "section" n))
 
 (define (subsection . ...)
   (command 'subsection ...)
   #| (lines "" (command 'subsection ...) "")) |#)
 
 (define (subsubsection . ...)
- (command 'subsubsection ...)
- #| (lines "" (command 'subsubsection ...) "")) |#)
+  (command 'subsubsection ...)
+  #| (lines "" (command 'subsubsection ...) "")) |#)
 
 (define (subsubsection* . ...)
- (command 'subsubsection* ...)
- #| (lines "" (command 'subsubsection* ...) "")) |#)
+  (command 'subsubsection* ...)
+  #| (lines "" (command 'subsubsection* ...) "")) |#)
 
 (define (subsection* . ...)
   (command 'subsection* ...)
@@ -301,13 +299,17 @@
   (require rackunit)
 
   (check-equal?
-    (parens "body")
+    (expand-body (parens "body"))
     "\\left(body\\right)")
 
   (check-equal?
-    (angs "body")
+    (expand-body (angs "body"))
     "\\langle body\\rangle ")
 
   (check-equal?
-    (math "body")
-    "$body$"))
+    (expand-body (math "body"))
+    "$body$") 
+
+  (check-equal?
+    (expand-body (opt-expand "a"))
+    "[a]")) 

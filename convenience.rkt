@@ -16,12 +16,13 @@
   (only-in 
     "math.rkt"
     fraction
-    hbar))
+    hbar)
 
-(define (paragraph . ...) 
-  (string-join ... "")
+; (define (paragraph . ...) 
+  ; (string-join ... "")
   #| (string-join (flatten (list ... "\n"))  "")) |#)
 
+(define paragraph list)
 (define ~ paragraph)
 
 
