@@ -29,6 +29,7 @@
  _
  newlines
  packages
+ cases
  align
  align-on
  align-on*
@@ -152,6 +153,10 @@
   (beg "align" 
     (apply newlines (map (curry cons '&) entries))))
 
+(define (cases . entries)
+  (beg "cases" 
+    (apply newlines entries)))
+
 (define (align-on aligner . lines)
   (define align-str (item-to-string aligner))
 
@@ -236,10 +241,10 @@
           (rest x)))
       entries)))
 
-(define (italic x)
+(define (italic . x)
   (command "textit" x))
 
-(define (bold x)
+(define (bold . x)
   (command "textbf" x))
 
 (define (alpha-subsections)

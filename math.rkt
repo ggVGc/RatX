@@ -56,6 +56,7 @@
 (define = '=)
 (define - '-)
 (define prim "'")
+(define degree (^ (command 'circ)))
 
 (define (SI value . units)
   (define (build-units x)

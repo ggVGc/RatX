@@ -28,7 +28,7 @@
 (define si (curry command "si"))
 (define (caption . content) (command 'caption content))
 (define (label name) (command "label" name))
-(define (eqref name) (command "eqref" (string-append "eq:" name)))
+(define (eqref name) (command "eqref" name))
 (define (ref name) (command "ref" name))
 (define (figref name) (string-append
                         "Figure "
