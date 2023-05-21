@@ -18,10 +18,8 @@
     fraction
     hbar))
 
-(define (paragraph . ...) 
-  #| (string-join ... "") |#
-  (string-join (flatten (list ... "\n"))  ""))
 
+(define paragraph list)
 (define ~ paragraph)
 
 

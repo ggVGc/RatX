@@ -30,7 +30,7 @@
    body))
 
 (define (sqrt . ...)
-  (command "sqrt" (expand-body ...)))
+  (command "sqrt" ...))
 
 (define (fraction a b)
   (command "frac" a b))
@@ -80,13 +80,17 @@
   (require rackunit)
 
   (check-equal?
-    (SI 123 "hej" 'lol)
-    "\\SI{123}{\\hej \\lol }")
+    (expand-body (SI 123 "hej" 'lol))
+    "\\SI{123}{\\hej\\lol}")
 
   (check-equal?
-    (SI 123 "test")
+    (expand-body (SI 123 "test"))
     "\\SI{123}{test}")
 
   (check-equal?
-    (SI 123 'test)
-    "\\SI{123}{\\test }"))
+    (expand-body (SI 123 'test))
+    "\\SI{123}{\\test}") 
+
+  (check-equal?
+    (expand-body (sqrt 123 "test"))
+    "\\sqrt{123test}"))
