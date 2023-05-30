@@ -21,7 +21,7 @@
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
-(def-simple to 'to)
+(define to (command 'to))
 (def-simple propto 'propto)
 
 (define (mathcal x) (command 'mathcal x))
