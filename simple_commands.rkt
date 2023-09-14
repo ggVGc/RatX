@@ -21,6 +21,7 @@
 (def-simple vec "vec")
 (def-simple cite 'cite)
 (def-simple input 'input)
+(define centering (command 'centering))
 (define to (command 'to))
 (def-simple propto 'propto)
 
@@ -30,12 +31,12 @@
 (define (label name) (command "label" name))
 (define (eqref name) (command "eqref" name))
 (define (ref name) (command "ref" name))
-(define (figref name) (string-append
+(define (figref name) (list
                         "Figure "
-                        (command "ref" name)))
+                        (ref name)))
 (define (tabref name) (list
                         "Table "
-                        (command "ref" name)))
+                        (ref name)))
 (define cdot (command 'cdot))
 (define Delta (command "Delta"))
 (define delta (command "delta"))

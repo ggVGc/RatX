@@ -135,7 +135,7 @@
   (intersperse separator ...))
 
 (define (comma-sep . ...)
-  (apply separated "," ...))
+  (apply separated ",\\," ...))
 
 (define (underscore var . subscript)
   (if

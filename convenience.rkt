@@ -1,22 +1,27 @@
 #lang racket
-(provide 
-  squared
-  frac
-  hbar2
-  paragraph
-  ~)
+(provide
+ squared
+ frac
+ hbar2
+ paragraph
+ ~
+ malign)
 
-(require 
-  (only-in 
-    "latex.rkt" 
-    ^ 
-    figure))
+(require
+  syntax/parse/define
+  (only-in
+   "latex.rkt"
+   ^
+   figure))
 
-(require 
-  (only-in 
-    "math.rkt"
-    fraction
-    hbar))
+(require
+  (only-in
+   "latex.rkt"
+   align)
+  (only-in
+   "math.rkt"
+   fraction
+   hbar))
 
 
 (define paragraph list)
@@ -28,25 +33,19 @@
 (define squared (^ 2))
 (define hbar2 (list hbar squared))
 
+(define-syntax-parse-rule (malign (entries ...) ...)
+  (align
+   (list entries ...) ...))
 
 (define-syntax (frac stx)
   (syntax-case stx ()
-    [(_ a b) 
+    [(_ a b)
      #'(
-        fraction 
+        fraction
         (list-wrap a)
         (list-wrap b))]))
 
 (define-syntax (list-wrap stx)
   (syntax-case stx ()
-    [(_ (a)) #'(list a)]
-    [(_ (a b)) #'(list a b)]
-    [(_ (a b c)) #'(list a b c)]
-    [(_ (a b c d)) #'(list a b c d)]
-    [(_ (a b c d e)) #'(list a b c d e)]
-    [(_ (a b c d e f)) #'(list a b c d e f)]
-    [(_ (a b c d e f a1)) #'(list a b c d e f a1)]
-    [(_ (a b c d e f a1 a2)) #'(list a b c d e f a1 a2)]
-    [(_ (a b c d e f a1 a2 a3)) #'(list a b c d e f a1 a2 a3)]
-    [(_ (a b c d e f a1 a2 a3 a4)) #'(list a b c d e f a1 a2 a3 a4)]
+    [(_ (a ...)) #'(list a ...)]
     [(_ a) #'(list a)]))
