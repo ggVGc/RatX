@@ -15,6 +15,7 @@
 
 (def-simple section "section")
 (def-simple dot "dot")
+(define (ddot x) (command 'ddot x))
 (def-simple hat "hat")
 (def-simple bar "bar")
 (def-simple overline "overline")

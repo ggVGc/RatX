@@ -9,6 +9,7 @@
   text
   pmatrix
   bmatrix
+  vmatrix
   pvec
   bvec
   pvect
@@ -213,6 +214,7 @@
 
 (define pmatrix (curry matrix "p"))
 (define bmatrix (curry matrix "b"))
+(define vmatrix (curry matrix "v"))
 (define pvec (curry vec "p"))
 (define bvec (curry vec "b"))
 (define pvect (curry vect "p"))
