@@ -57,11 +57,13 @@
   subsection*
   subsubsection
   subsubsection*
-  figure)
+  figure
+  itemize
+  item)
 
 (define make-title (command 'maketitle))
 
-(define (doc-begin title author [date ""])
+(define (doc-begin [title ""] [author ""] [date ""])
   (lines
     (command 'title title)
     (command 'author author)
@@ -301,6 +303,12 @@
 (define (subsection* . ...)
   (command 'subsection* ...)
   #| (lines "" (command 'subsection* ...) "")) |#)
+
+
+(define (itemize . body)
+  (beg "itemize" body))
+
+(define item (curry command 'item))
 
 (module+ test
   (require rackunit)
