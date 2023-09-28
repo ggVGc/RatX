@@ -1,9 +1,9 @@
 ; vim: ft=racket.ratx
 
-#lang at-exp s-exp (file "~/stuff/RatX/display-all.rkt")
+#lang at-exp s-exp (file "display-all.rkt")
 
-(require (file "~/stuff/RatX/RatX.rkt"))
-(require (file "~/stuff/RatX/convenience.rkt"))
+(require (file "RatX.rkt"))
+(require (file "convenience.rkt"))
 
 (article-a4)
 (usepackage 'tabularx)
