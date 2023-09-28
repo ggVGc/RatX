@@ -59,7 +59,8 @@
   subsubsection*
   figure
   itemize
-  item)
+  item
+  items)
 
 (define make-title (command 'maketitle))
 
@@ -309,6 +310,18 @@
   (beg "itemize" body))
 
 (define item (curry command 'item))
+
+(define (items . rows)
+  (define (empty-string? row)
+    (and (string? row) (equal? (string-trim row) "")))
+
+  (beg 'itemize
+       (for/list ([row rows])
+         (if (empty-string? row)
+             null
+             (command 'item row)
+             )
+         )))
 
 (module+ test
   (require rackunit)
