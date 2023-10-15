@@ -316,12 +316,12 @@
     (and (string? row) (equal? (string-trim row) "")))
 
   (beg 'itemize
-       (for/list ([row rows])
+       (apply lines (for/list ([row rows])
          (if (empty-string? row)
              null
              (command 'item row)
              )
-         )))
+         ))))
 
 (module+ test
   (require rackunit)
