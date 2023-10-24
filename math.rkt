@@ -35,6 +35,11 @@
 (define (fraction a b)
   (command "frac" a b))
 
+(define (deriv a b)
+  (fraction
+    (list 'd  a)
+    (list 'd b)))
+
 (define (part-deriv a b)
   (fraction
     (list partial a)

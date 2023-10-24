@@ -8,6 +8,7 @@
 (require "greek.rkt")
 (require "documentclass.rkt")
 (require "packages.rkt")
+(require "convenience.rkt")
 
 (provide (all-from-out "latex.rkt"))
 (provide (all-from-out "math.rkt"))
@@ -18,3 +19,4 @@
 (provide (all-from-out "greek.rkt"))
 (provide (all-from-out "documentclass.rkt"))
 (provide (all-from-out "packages.rkt"))
+(provide (all-from-out "convenience.rkt"))
