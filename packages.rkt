@@ -13,4 +13,4 @@
   (lines
        "\\usepackage[colorinlistoftodos,prependcaption]{todonotes}"
        "\\let\\originaltodo\\todo"
-       "\\renewcommand{\\todo}[1]{\\originaltodo[inline]{#1}}"))
+       "\\renewcommand{\\todo}[1]{\\originaltodo[inline, backgroundcolor=pink]{#1}}"))
