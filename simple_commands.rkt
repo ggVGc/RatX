@@ -14,6 +14,7 @@
               (command out-name (expand-body content)))))])))
 
 (def-simple section "section")
+(def-simple section* "section*")
 (def-simple dot "dot")
 (define (ddot x) (command 'ddot x))
 (def-simple hat "hat")

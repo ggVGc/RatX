@@ -23,6 +23,6 @@
     (command 'originaltodo
              #:opts (list
                      'inline
-                    "backgroundcolor = pink")
+                     "backgroundcolor = pink")
              "#1")
     "}")))
