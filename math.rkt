@@ -19,13 +19,13 @@
 
 (define (sum start end . body)
   (list
-    (^ (_ (command "sum") start) end)
-    body))
+   (^ (_ (command "sum") start) end)
+   body))
 
 (define (abs . v) (list "\\left|" v "\\right|"))
 
 (define (prod start end . body)
- (list
+  (list
    (^ (_ (command "prod") start) end)
    body))
 
@@ -37,13 +37,13 @@
 
 (define (deriv a b)
   (fraction
-    (list 'd  a)
-    (list 'd b)))
+   (list 'd  a)
+   (list 'd b)))
 
 (define (part-deriv a b)
   (fraction
-    (list partial a)
-    (list partial b)))
+   (list partial a)
+   (list partial b)))
 
 (define partial (command 'partial))
 (define pi (command 'pi))
@@ -69,57 +69,57 @@
     (map (lambda (u) (list "\\" u)) x))
 
   (command "SI"
-    value
-    (match units
-      [(list entry) #:when (string? entry) entry]
-      [(list entry) #:when (list? entry) 
-          (build-units entry)]          
-      [_ 
-        (build-units units)])))
+           value
+           (match units
+             [(list entry) #:when (string? entry) entry]
+             [(list entry) #:when (list? entry) 
+                           (build-units entry)]          
+             [_ 
+              (build-units units)])))
 
 (define (SI-err val err . units)
   (apply SI
-    (list val pm err)
-    units))
+         (list val pm err)
+         units))
 
 (define (integral-indef integrand . body)
   (list 
-    (command 'int)
-    body
-    "\\,"
-    "d" integrand))
+   (command 'int)
+   body
+   "\\,"
+   "d" integrand))
 
 (define (integral-multi integrand start stop . body)
   (list 
-    (command 'int)
-    body
-    "\\,"
-    "d" integrand _ start
-    (command 'ldots)
-    "d" integrand _ stop))
+   (command 'int)
+   body
+   "\\,"
+   "d" integrand _ start
+   (command 'ldots)
+   "d" integrand _ stop))
 
 (define (integral a b integrand . body)
   (list 
-    (command 'int) _ a ^  b
-    body
-    "\\,"
-    "d" integrand))
+   (command 'int) _ a ^  b
+   body
+   "\\,"
+   "d" integrand))
 
 (module+ test
   (require rackunit)
 
   (check-equal?
-    (expand-body (SI 123 "hej" 'lol))
-    "\\SI{123}{\\hej\\lol}")
+   (expand-body (SI 123 "hej" 'lol))
+   "\\SI{123}{\\hej\\lol}")
 
   (check-equal?
-    (expand-body (SI 123 "test"))
-    "\\SI{123}{test}")
+   (expand-body (SI 123 "test"))
+   "\\SI{123}{test}")
 
   (check-equal?
-    (expand-body (SI 123 'test))
-    "\\SI{123}{\\test}") 
+   (expand-body (SI 123 'test))
+   "\\SI{123}{\\test}") 
 
   (check-equal?
-    (expand-body (sqrt 123 "test"))
-    "\\sqrt{123test}"))
+   (expand-body (sqrt 123 "test"))
+   "\\sqrt{123test}"))
