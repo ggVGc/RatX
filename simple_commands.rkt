@@ -49,6 +49,18 @@
 (define (texttt content)
   (command 'texttt content))
 
+(define (italic . x)
+  (command "textit" x))
+
+(define (bold . x)
+  (command "textbf" x))
+
+(define (small-text content)
+  (command 'small content))
+
+(define (large-text content)
+  (command 'large content))
+
 (define (monotext . content)
   (command 'monotext content))
 

@@ -244,12 +244,6 @@
              (rest x)))
          entries)))
 
-(define (italic . x)
-  (command "textit" x))
-
-(define (bold . x)
-  (command "textbf" x))
-
 (define (alpha-subsections)
   (command "renewcommand"
            (command "thesubsection")

@@ -62,6 +62,7 @@
 (define - '-)
 (define prim "'")
 (define degree (^ (command 'circ)))
+(define nabla (command 'nabla))
 
 (define (SI value . units)
   (define (build-units x)
@@ -80,6 +81,29 @@
   (apply SI
     (list val pm err)
     units))
+
+(define (integral-indef integrand . body)
+  (list 
+    (command 'int)
+    body
+    "\\,"
+    "d" integrand))
+
+(define (integral-multi integrand start stop . body)
+  (list 
+    (command 'int)
+    body
+    "\\,"
+    "d" integrand _ start
+    (command 'ldots)
+    "d" integrand _ stop))
+
+(define (integral a b integrand . body)
+  (list 
+    (command 'int) _ a ^  b
+    body
+    "\\,"
+    "d" integrand))
 
 (module+ test
   (require rackunit)
