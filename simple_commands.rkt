@@ -68,19 +68,3 @@
 (define (boxed . content)
   (command 'boxed content))
 
-(define (usepackage name . opts)
-  (command #:opts opts 'usepackage name))
-
-(define (usepackages . packages)
-  (lines 
-    (intersperse "\n" 
-     (map 
-       (λ (entry)
-         (match entry
-           [(list name opts)
-            (apply usepackage name opts)] 
-           [name
-             #:when (not (list? name))
-             (usepackage name)]))
-       packages))))
-

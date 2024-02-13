@@ -6,7 +6,9 @@
  intersperse
  wrapped
  command
- lines)
+ lines
+ usepackage
+ usepackages)
 
 (define (debug msg x)
   (printf "~a: ~a~n" msg x)
@@ -58,6 +60,22 @@
 
 (define (lines . entries)
   (intersperse "\n" entries))
+
+(define (usepackage name . opts)
+  (command #:opts opts 'usepackage name))
+
+(define (usepackages . packages)
+  (lines
+   (intersperse "\n"
+                (map
+                 (λ (entry)
+                   (match entry
+                     [(list name opts)
+                      (apply usepackage name opts)]
+                     [name
+                      #:when (not (list? name))
+                      (usepackage name)]))
+                 packages))))
 
 (module+ test
   (require rackunit)

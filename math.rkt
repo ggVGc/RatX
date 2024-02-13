@@ -100,7 +100,7 @@
 
 (define (integral a b integrand . body)
   (list 
-   (command 'int) _ a ^  b
+   (command 'int) _ "{" a "}" ^ "{" b "}"
    body
    "\\,"
    "d" integrand))

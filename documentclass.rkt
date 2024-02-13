@@ -12,15 +12,28 @@
   (command #:opts opts 'documentclass type))
 
 (define default-packages
-  (list 
-      'float
-      'amsmath
-      'amssymb))
+  '((inputenc (utf8))
+    #| Prevent figures and tables from ending up outside their sections. |#
+    (placeins (section))
+    #| Begin paragraphs with an empty line rather than an indent. |#
+    (parskip (parfill))
+    graphicx
+    float
+    mathtools
+    amsmath
+    amsthm
+    amsfonts
+    amssymb
+    cancel
+    tabularx
+    booktabs
+    siunitx
+    bm))
 
 (define (article #:points [points 11] #:packages [packages default-packages])
   (list
    (documentclass (list 'a4paper (list points 'pt)) 'article)
-   (map (curry command 'usepackage) packages )))
+   (apply usepackages packages)))
 
 ; TODO: Deprecate
 (define article-a4 article)
