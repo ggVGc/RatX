@@ -14,15 +14,17 @@
 (define (add-caption content)
   (if (null? content)
     ""
-    (caption content)))
+    (list
+     (caption content)
+     (command 'vspace "3mm"))))
  
 
 (define (table headers #:config [config null] #:caption [cap null] #:label [lab null] . body)
   (table-env
+    (add-caption cap) 
     (if (null? config)
       (apply tabular headers body)
       (apply tabular headers #:config config body))
-    (add-caption cap) 
     (add-label lab))) 
 
 
