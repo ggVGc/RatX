@@ -279,9 +279,9 @@
 (define verbatim (curry beg 'verbatim))
 
 (define (figure #:opt [opt "htb"] . body)
-  (list
-   (command 'centering)
-   (beg #:opt opt 'figure body)))
+  (beg #:opt opt 'figure (list
+                          (command 'centering)
+                          body)))
 
 (define (figure-here . body) 
   (apply figure #:opt "H" body))
