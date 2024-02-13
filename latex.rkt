@@ -58,6 +58,7 @@
  subsubsection
  subsubsection*
  figure
+ figure-here
  itemize
  item
  items)
@@ -236,7 +237,7 @@
 
 
 (define (bibliography . entries)
-  (beg #:args "3" "thebibliography" 
+  (beg #:arg "3" "thebibliography" 
        (map
         (lambda (x)
           (list
@@ -271,14 +272,19 @@
    "minipage"
    (list 
     (apply lines 
-           (flatten (list 
-                     (command 'centering)
-                     page))))))     
+           (list 
+            (command 'centering)
+            page)))))     
 
 (define verbatim (curry beg 'verbatim))
 
-(define (figure #:opt [opt "H"] . body)
-  (beg #:opt opt 'figure body))
+(define (figure #:opt [opt "htb"] . body)
+  (list
+   (command 'centering)
+   (beg #:opt opt 'figure body)))
+
+(define (figure-here . body) 
+  (apply figure #:opt "H" body))
 
 (define (section-start n)
   (command "setcounter" "section" n))
@@ -316,6 +322,7 @@
                           (command 'item row)
                           )
                       ))))
+
 
 (module+ test
   (require rackunit)
