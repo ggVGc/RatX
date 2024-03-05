@@ -26,6 +26,8 @@
 (define centering (command 'centering))
 (define to (command 'to))
 (def-simple propto 'propto)
+(define ldots (command 'ldots))
+(define ellipsis ldots )
 
 (define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
@@ -67,4 +69,5 @@
 
 (define (boxed . content)
   (command 'boxed content))
+
 

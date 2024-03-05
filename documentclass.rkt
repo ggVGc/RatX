@@ -30,7 +30,7 @@
     siunitx
     bm))
 
-(define (article #:points [points 11] #:packages [packages default-packages])
+(define (article #:points [points 12] #:packages [packages default-packages])
   (list
    (documentclass (list 'a4paper (list points 'pt)) 'article)
    (apply usepackages packages)))
