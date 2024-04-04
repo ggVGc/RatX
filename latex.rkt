@@ -250,8 +250,17 @@
            (command "thesubsection")
            (list (command "thesection") "." (command "alph" "subsection"))))
 
-(define (image path)
-  (command "includegraphics[width=\\linewidth]" path))
+; If caption is given, a label will be automatically set
+; based on the path.
+(define (image path #:width [width 1]. caption-content)
+  (list
+   (command (list "includegraphics[width=" width "\\linewidth]") path)
+   (if (not (null? caption-content))
+       (list
+        (caption caption-content)
+        (label path))
+       null)
+   ))
 
 (define (imagew width path)
   (command (list "includegraphics[width=" width "\\linewidth]") path))
