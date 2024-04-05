@@ -65,17 +65,23 @@
   (command #:opts opts 'usepackage name))
 
 (define (usepackages . packages)
-  (lines
-   (intersperse "\n"
-                (map
-                 (λ (entry)
-                   (match entry
-                     [(list name opts)
-                      (apply usepackage name opts)]
-                     [name
-                      #:when (not (list? name))
-                      (usepackage name)]))
-                 packages))))
+  (define (gen-package-uses package-list)
+    (lines
+     (intersperse "\n"
+                  (map
+                   (λ (entry)
+                     (match entry
+                       [(list name opts)
+                        (apply usepackage name opts)]
+                       [name
+                        #:when (not (list? name))
+                        (usepackage name)]))
+                   package-list))))
+  (match packages
+    [(list pkgs)
+     (gen-package-uses pkgs)]
+    [pkgs (gen-package-uses pkgs)])
+  )
 
 (module+ test
   (require rackunit)
