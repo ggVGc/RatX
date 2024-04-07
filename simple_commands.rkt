@@ -58,6 +58,9 @@
 (define (bold . x)
   (command "textbf" x))
 
+(define (math-bold . x)
+  (command "bm" x))
+
 (define (small-text content)
   (command 'small content))
 
