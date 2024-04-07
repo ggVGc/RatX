@@ -33,7 +33,9 @@
 (define (article #:points [points 12] #:packages [packages default-packages])
   (list
    (documentclass (list 'a4paper (list points 'pt)) 'article)
-   (usepackages packages)))
+   (usepackages packages)
+   "\\DeclareSIUnit\\angstrom{\\text{\\AA}}"
+   ))
 
 ; TODO: Deprecate
 (define article-a4 article)
