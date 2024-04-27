@@ -268,16 +268,17 @@
 (define (smallimage path)
   (command "includegraphics[width=0.5\\linewidth]" path))
 
-(define (side-by-side a b)
+(define (side-by-side a b #:width [width 0.48])
   (lines
-   (sbs-page a)
-   (sbs-page b)))
+   (sbs-page a #:width width)
+   (command 'hspace (list 0.01 (command 'textwidth)))
+   (sbs-page b #:width width)))
 
 
-(define (sbs-page page)
+(define (sbs-page page #:width [width 0.48])
   (beg
    #:opt "t" 
-   #:arg (list 0.48 (command 'textwidth))
+   #:arg (list width (command 'textwidth))
    "minipage"
    (list 
     (apply lines 
