@@ -51,6 +51,7 @@
  imagew
  smallimage
  side-by-side
+ sbs-page
  verbatim
  section-start
  subsection
@@ -268,16 +269,16 @@
 (define (smallimage path)
   (command "includegraphics[width=0.5\\linewidth]" path))
 
-(define (side-by-side a b #:width [width 0.48])
+(define (side-by-side a b #:width [width 0.48] #:opt [opt "t"])
   (lines
-   (sbs-page a #:width width)
+   (sbs-page a #:width width #:opt opt)
    (command 'hspace (list 0.01 (command 'textwidth)))
-   (sbs-page b #:width width)))
+   (sbs-page b #:width width #:opt opt)))
 
 
-(define (sbs-page page #:width [width 0.48])
+(define (sbs-page page #:width [width 0.48] #:opt [opt ""])
   (beg
-   #:opt "t" 
+   #:opt opt
    #:arg (list width (command 'textwidth))
    "minipage"
    (list 
