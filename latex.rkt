@@ -51,6 +51,7 @@
  imagew
  smallimage
  side-by-side
+ sbs-page
  verbatim
  section-start
  subsection
@@ -250,8 +251,17 @@
            (command "thesubsection")
            (list (command "thesection") "." (command "alph" "subsection"))))
 
-(define (image path)
-  (command "includegraphics[width=\\linewidth]" path))
+; If caption is given, a label will be automatically set
+; based on the path.
+(define (image path #:width [width 1]. caption-content)
+  (list
+   (command (list "includegraphics[width=" width "\\linewidth]") path)
+   (if (not (null? caption-content))
+       (list
+        (caption caption-content)
+        (label path))
+       null)
+   ))
 
 (define (imagew width path)
   (command (list "includegraphics[width=" width "\\linewidth]") path))
@@ -259,16 +269,17 @@
 (define (smallimage path)
   (command "includegraphics[width=0.5\\linewidth]" path))
 
-(define (side-by-side a b)
+(define (side-by-side a b #:width [width 0.48] #:opt [opt "t"])
   (lines
-   (sbs-page a)
-   (sbs-page b)))
+   (sbs-page a #:width width #:opt opt)
+   (command 'hspace (list 0.01 (command 'textwidth)))
+   (sbs-page b #:width width #:opt opt)))
 
 
-(define (sbs-page page)
+(define (sbs-page page #:width [width 0.48] #:opt [opt ""])
   (beg
-   #:opt "t" 
-   #:arg (list 0.48 (command 'textwidth))
+   #:opt opt
+   #:arg (list width (command 'textwidth))
    "minipage"
    (list 
     (apply lines 
@@ -278,7 +289,7 @@
 
 (define verbatim (curry beg 'verbatim))
 
-(define (figure #:opt [opt "htb"] . body)
+(define (figure #:opt [opt "!htb"] . body)
   (beg #:opt opt 'figure (list
                           (command 'centering)
                           body)))

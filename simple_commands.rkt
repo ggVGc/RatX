@@ -37,12 +37,7 @@
 (define (label name) (command "label" name))
 (define (eqref name) (command "eqref" name))
 (define (ref name) (command "ref" name))
-(define (figref name) (list
-                        "Figure "
-                        (ref name)))
-(define (tabref name) (list
-                        "Table "
-                        (ref name)))
+
 (define cdot (command 'cdot))
 (define Delta (command "Delta"))
 (define delta (command "delta"))
@@ -59,6 +54,9 @@
 
 (define (bold . x)
   (command "textbf" x))
+
+(define (math-bold . x)
+  (command "bm" x))
 
 (define (small-text content)
   (command 'small content))

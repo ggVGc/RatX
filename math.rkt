@@ -70,18 +70,28 @@
 (define dagger dag)
 (define double-dagger ddag)
 
-(define (SI value . units)
-  (define (build-units x)
-    (map (lambda (u) (list "\\" u)) x))
 
+
+(define (build-si-units x)
+  (map (lambda (u) (list "\\" u)) x))
+
+(define (SI value . units)
   (command "SI"
            value
            (match units
              [(list entry) #:when (string? entry) entry]
+             [(list entry) #:when (list? entry)
+                           (build-si-units entry)]
+             [_ (build-si-units units)])))
+
+(define (si-range a b . units)
+  (command "qtyrange" a b
+           (match units
+             [(list entry) #:when (string? entry) entry]
              [(list entry) #:when (list? entry) 
-                           (build-units entry)]          
-             [_ 
-              (build-units units)])))
+                           (build-si-units entry)]          
+             [_ (build-si-units units)]))
+  )
 
 (define (SI-err val err . units)
   (apply SI
@@ -89,14 +99,14 @@
          units))
 
 (define (integral-indef integrand . body)
-  (list 
+  (list
    (command 'int)
    body
    "\\,"
    "d" integrand))
 
 (define (integral-multi integrand start stop . body)
-  (list 
+  (list
    (command 'int)
    body
    "\\,"
@@ -105,7 +115,7 @@
    "d" integrand _ stop))
 
 (define (integral a b integrand . body)
-  (list 
+  (list
    (command 'int) _ "{" a "}" ^ "{" b "}"
    body
    "\\,"
@@ -127,7 +137,7 @@
 
   (check-equal?
    (expand-body (SI 123 'test))
-   "\\SI{123}{\\test}") 
+   "\\SI{123}{\\test}")
 
   (check-equal?
    (expand-body (sqrt 123 "test"))
