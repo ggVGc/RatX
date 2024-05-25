@@ -33,7 +33,7 @@
 (define (article #:points [points 12] #:packages [packages default-packages])
   (list
    (documentclass (list 'a4paper (list points 'pt)) 'article)
-   (apply usepackages packages)))
+   (usepackages packages)))
 
 ; TODO: Deprecate
 (define article-a4 article)

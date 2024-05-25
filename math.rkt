@@ -40,6 +40,8 @@
    (list 'd  a)
    (list 'd b)))
 
+(define (ddt x) (deriv x 't))
+
 (define (part-deriv a b)
   (fraction
    (list partial a)
@@ -63,6 +65,10 @@
 (define prim "'")
 (define degree (^ (command 'circ)))
 (define nabla (command 'nabla))
+(define dag (command 'ddag))
+(define ddag (command 'ddag))
+(define dagger dag)
+(define double-dagger ddag)
 
 (define (SI value . units)
   (define (build-units x)
@@ -104,6 +110,9 @@
    body
    "\\,"
    "d" integrand))
+
+
+
 
 (module+ test
   (require rackunit)

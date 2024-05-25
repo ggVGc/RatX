@@ -28,6 +28,8 @@
 (def-simple propto 'propto)
 (define ldots (command 'ldots))
 (define ellipsis ldots )
+(define (overset a b) (command 'overset a b))
+(define (underset a b) (command 'underset a b))
 
 (define (mathcal x) (command 'mathcal x))
 (define si (curry command "si"))
